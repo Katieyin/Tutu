@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>340771135945-pp9tf1fqm6p4q8niace9c1tkb5sc9r5h.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.340771135945-pp9tf1fqm6p4q8niace9c1tkb5sc9r5h</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC5HMtCSpI0tmxn7hYsSvuR-s3XKaBowQA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>340771135945</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>o.a.a</string>
+	<key>PROJECT_ID</key>
+	<string>tutu-project</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tutu-project.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:340771135945:ios:657e6f61d215f4e8</string>
+	<key>DATABASE_URL</key>
+	<string>https://tutu-project.firebaseio.com</string>
+</dict>
+</plist>
