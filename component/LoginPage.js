@@ -1,22 +1,18 @@
 import React, {Component} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {FormInput, Button, Text, FormValidationMessage, Input} from 'react-native-elements';
-import {View, Button as ButtonText, Image, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import {FormInput, Button, Text, FormValidationMessage} from 'react-native-elements';
+import {View, Image, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import firebase from 'react-native-firebase';
 import {StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 export class LoginPage extends Component {
-    static navigationOptions =
-        {
-            header: null,
-        };
+    static navigationOptions = {header: null};
+
     state = {
         loading: true,
         email: '',
         password: '',
         errorMessage: '',
-    }
+    };
 
     render() {
         const {errorMessage, loading} = this.state;
@@ -34,7 +30,6 @@ export class LoginPage extends Component {
                     <FormInput
                         containerStyle={styles.formContainer}
                         placeholder='Email'
-                        autoCapitalize='none'
                         value={this.state.email}
                         returnKeyType={'next'}
                         inputStyle={{marginTop: 5}}
@@ -43,7 +38,6 @@ export class LoginPage extends Component {
                         keyboardType="email-address"
                         autoCapitalize="none"
                         autoCorrect={false}
-
                     />
                     <FormInput
                         containerStyle={styles.formContainer}
@@ -147,7 +141,7 @@ const styles = StyleSheet.create({
     },
     forgetPasswordText: {
         fontSize: 15,
-        color: 'rgba(255, 255, 255, 0.8)'
+        color: 'rgba(255, 255, 255, 1)'
     }
 
 });
