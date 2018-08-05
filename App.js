@@ -1,49 +1,76 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {View, Text} from 'react-native';
+import {createStackNavigator, TabNavigator} from 'react-navigation';
+import {LoginPage} from "./component/LoginPage";
+import {HomePage} from "./component/HomePage";
+import {SignUpPage} from "./component/SignUpPage";
+import { Icon } from 'react-native-elements'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+
+// export default Tabs = TabNavigator({
+//     Create: {
+//         screen: HomePage,
+//         navigationOptions:{
+//             tabBarLabel: 'Create',
+//             tabBarIcon: ({tintColor}) => (
+//                 <Icon name="plus" size={24} type='evilicon'/>
+//             )
+//         }
+//     },
+//     Search: {
+//         screen: HomePage,
+//         navigationOptions:{
+//             tabBarLabel: 'Create',
+//             tabBarIcon: ({tintColor}) => (
+//                 <Icon name="search" size={24} type='evilicon'/>
+//             )
+//         }
+//     },
+//     WishList: {
+//         screen: HomePage,
+//         navigationOptions:{
+//             tabBarLabel: 'Create',
+//             tabBarIcon: ({tintColor}) => (
+//                 <Icon name="heart" size={24} type='evilicon'/>
+//             )
+//         }
+//     },
+//     Chat: {
+//         screen: HomePage,
+//         navigationOptions:{
+//             tabBarLabel: 'Create',
+//             tabBarIcon: ({tintColor}) => (
+//                 <Icon name="comment" size={24} type='evilicon'/>
+//             )
+//         }
+//     },
+//     Profile: {
+//         screen: HomePage,
+//         navigationOptions:{
+//             tabBarLabel: 'Create',
+//             tabBarIcon: ({tintColor}) => (
+//                 <Icon
+//                     name='user'
+//                     type='evilicon'
+//                     size={24}
+//                 />
+//             )
+//         }
+//     }
+// });
+
+export default createStackNavigator({
+    Login: {
+        screen: LoginPage,
+    },
+    Home: {
+        screen: HomePage,
+    },
+    SignUp: {
+        screen: SignUpPage
+    }
+    // Tab:{
+    //     screen: Tabs
+    // }
 });
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
