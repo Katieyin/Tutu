@@ -1,33 +1,30 @@
 import React, {Component} from 'react';
-import {FormLabel, FormInput, Button, Text, SearchBar} from 'react-native-elements';
-import {View, Button as ButtonText, TextInput} from 'react-native';
-import { Icon } from 'react-native-elements'
-const FB_APP_ID = '1376485632449872';
+import {View, Text, Image} from 'react-native';
+import {Icon, Button, SearchBar} from 'react-native-elements';
 
 export class HomePage extends Component {
 
-    static navigationOptions =
-        {
-            title: 'Home',
-        };
-
-    constructor(props) {
-        super(props);
-        this.search = React.createRef();
+    state = {
+        type: 'found',
+        loading: true,
+        list: []
     }
 
 
+    refreshPostlist = () => {
+
+    }
+
     render() {
+        const {navigate} = this.props.navigation;
 
         return (
             <View>
-                <Text> This is SecondActivity </Text>
-
+                <SearchBar
+                    lightTheme
+                    placeholder='Type Here...' />
             </View>
         );
-    }
-    clearSearch = () => {
-        this.search.clear();
     }
 }
 
