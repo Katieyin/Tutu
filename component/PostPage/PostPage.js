@@ -15,12 +15,10 @@ export class PostPage extends Component {
     };
 
     setModalVisible(visible) {
-        console.log('000');
         this.setState({modalVisible: visible});
     }
 
     handelCloseButtonPress = () => {
-        console.log('879');
         AlertIOS.alert(
             'Are you sure you want to leave this page?',
             'The detail may not be saved',
@@ -38,8 +36,8 @@ export class PostPage extends Component {
         );
     };
 
-    handelAddCoursePress = () => {
-        this.props.navigation.navigate('AddNewPost');
+    closeModal = () => {
+        this.setModalVisible(!this.state.modalVisible);
     };
 
     render() {
@@ -62,19 +60,13 @@ export class PostPage extends Component {
                     <Modal
                         animationType="slide"
                         transparent={false}
-                        visible={this.state.modalVisible}
-                        onRequestClose={() => {
-                            alert('Modal has been closed.');
-                        }}>
+                        visible={this.state.modalVisible}>
                         <Header backgroundColor={'white'}
-                            leftComponent={<Icon name="close" size={20} type='material-community' color='#88959F'
-                                                 onPress={
-                                                     this.handelCloseButtonPress
-                                                     // this.setModalVisible(!this.state.modalVisible);
-                                                 }/>}
-                            centerComponent={{ text: 'Add New Course', }}
+                                leftComponent={<Icon name="close" size={20} type='material-community' color='#88959F'
+                                                     onPress={this.handelCloseButtonPress}/>}
+                                centerComponent={{text: 'Add New Course',}}
                         />
-                        <AddNewPostPage/>
+                        <AddNewPostPage closeModal={this.closeModal}/>
                     </Modal>
                 </View>
             </View>
@@ -112,7 +104,7 @@ const styles = StyleSheet.create(
             marginTop: 25,
             marginLeft: 10
         },
-        addNewTitle:{
+        addNewTitle: {
             alignItems: 'center',
             justifyContent: 'center',
         }

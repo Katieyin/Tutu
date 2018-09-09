@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {createStackNavigator, TabNavigator, createBottomTabNavigator} from 'react-navigation';
+import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
 import {HomePage, HomeStack} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
-import {Icon, Button} from 'react-native-elements'
+import {Icon} from 'react-native-elements'
 import {PostStack} from "./component/PostPage/PostPage";
 import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 
@@ -72,6 +71,12 @@ export const Tabs = createBottomTabNavigator({
 });
 
 export const Root = createStackNavigator({
+    Login:{
+        screen: LoginPage
+    },
+    SignUp: {
+        screen: SignUpPage
+    },
     Tabs: {
         screen: Tabs,
     },

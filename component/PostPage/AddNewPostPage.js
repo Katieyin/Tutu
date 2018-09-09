@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, TextInput, AlertIOS, CameraRoll, Text, Keyboard} from 'react-native';
+import {View, StyleSheet, TextInput, Keyboard} from 'react-native';
 import {createStackNavigator} from "react-navigation";
-import {FormInput, Icon, Button, FormLabel, FormValidationMessage, CheckBox} from 'react-native-elements';
+import {FormInput, Button, FormLabel, FormValidationMessage, CheckBox} from 'react-native-elements';
 import {Dropdown} from 'react-native-material-dropdown';
 import {Location} from "../map/Location";
 import {CATEGORY} from "./CategoryList";
+import firebase from 'react-native-firebase';
 
 export class AddNewPostPage extends Component {
     state = {
         title: '',
         selectedCategory: '',
-        isCheckedOnline: false,
-        isCheckedFTF: false,
+        isOnlineChecked: false,
+        isFTFChecked: false,
         price: null,
+        img: null,
         description: '',
         location: '',
         address: '',
@@ -28,27 +30,14 @@ export class AddNewPostPage extends Component {
 
     handlePressOnlineCheckedBox = () => {
         this.setState({
-            isCheckedOnline: !this.state.isCheckedOnline,
+            isOnlineChecked: !this.state.isOnlineChecked,
         });
     };
 
     handlePressFTFCheckedBox = () => {
         this.setState({
-            isCheckedFTF: !this.state.isCheckedFTF,
+            isFTFChecked: !this.state.isFTFChecked,
         });
-    };
-
-    _handleButtonPress = () => {
-        CameraRoll.getPhotos({
-            first: 20,
-            assetType: 'Photos',
-        })
-            .then(r => {
-                this.setState({photos: r.edges});
-            })
-            .catch((err) => {
-                //Error Loading Images
-            });
     };
 
     handlePost = () => {
@@ -56,8 +45,8 @@ export class AddNewPostPage extends Component {
         const {
             title,
             selectedCategory,
-            isCheckedOnline,
-            isCheckedFTF,
+            isOnlineChecked,
+            isFTFChecked,
             price,
             description,
             location,
@@ -69,14 +58,29 @@ export class AddNewPostPage extends Component {
         if (!title || !selectedCategory || !price || !description) {
             const requiredError = 'Required';
             this.setState({requiredError});
-        }
-
-        if (!isCheckedOnline && !isCheckedFTF) {
+        } else if (!isOnlineChecked && !isFTFChecked) {
             const requiredCheckboxError = 'Please select at least one';
             this.setState({requiredCheckboxError});
-        }
+        } else {
+            const currentUser = firebase.auth().currentUser;
+            const {uid} = currentUser;
+            const db = firebase.firestore().collection('courses');
+            db.add({
+                userId: uid,
+                selectedCategory: this.state.selectedCategory,
+                price: this.state.price,
+                title: this.state.title,
+                online: this.state.isOnlineChecked,
+                faceToFace: this.state.isFTFChecked,
+                description: this.state.description,
+                location: this.state.location
+            }).then(() => {
+                this.props.closeModal();
+            }).catch((error) => {
+                console.log(error)
+            });
 
-        console.log(this.state);
+        }
     };
 
     render() {
@@ -150,7 +154,7 @@ export class AddNewPostPage extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <CheckBox title='Online'
                                   checkedColor={'#f88523'}
-                                  checked={this.state.isCheckedOnline}
+                                  checked={this.state.isOnlineChecked}
                                   containerStyle={{backgroundColor: 'white', borderWidth: 0}}
                                   iconType='material-community'
                                   size={20}
@@ -159,7 +163,7 @@ export class AddNewPostPage extends Component {
                                   onPress={this.handlePressOnlineCheckedBox}
                         />
                         <CheckBox title='Face to face'
-                                  checked={this.state.isCheckedFTF}
+                                  checked={this.state.isFTFChecked}
                                   checkedColor={'#f88523'}
                                   onPress={this.handlePressFTFCheckedBox}
                                   size={20}
@@ -170,14 +174,14 @@ export class AddNewPostPage extends Component {
                     </View>
 
                 </View>
-                {requiredCheckboxError && !this.state.isCheckedOnline && !this.state.isCheckedFTF ?
+                {requiredCheckboxError && !this.state.isOnlineChecked && !this.state.isFTFChecked ?
                     <FormValidationMessage>{requiredCheckboxError}</FormValidationMessage> : null}
                 <Location/>
 
                 <View style={styles.bottomView}>
                     <Button
                         title="Post"
-                        containerStyle={styles.addButton}
+                        buttonStyle={styles.addButton}
                         textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}
                         onPress={this.handlePost}
                     />
@@ -191,24 +195,22 @@ const styles = StyleSheet.create(
     {
         bottomView: {
             width: '100%',
-            // height: '6%',
             justifyContent: 'center',
             alignItems: 'center',
             position: 'absolute',
-            bottom: 0,
+            bottom: 5,
         },
 
         addButton: {
-            borderRadius: 25,
-            shadowColor: 'grey',
-            shadowOffset: {width: 0, height: 2},
-            shadowOpacity: 0.3,
-            shadowRadius: 2,
-            backgroundColor: '#f7f7f7',
-            height: '100%',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: 10,
+            width: '100%',
+            backgroundColor: '#f88523',
+            height: 45,
+            borderColor: "transparent",
+            borderWidth: 0,
+            borderRadius: 5
         }
     });
 
