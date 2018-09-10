@@ -1,76 +1,95 @@
 import React, {Component} from 'react';
-import {View, Text} from 'react-native';
-import {createStackNavigator, TabNavigator} from 'react-navigation';
+import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
-import {HomePage} from "./component/HomePage";
+import {HomePage, HomeStack} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
-import { Icon } from 'react-native-elements'
+import {Icon} from 'react-native-elements'
+import {PostStack} from "./component/PostPage/PostPage";
+import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 
 
-// export default Tabs = TabNavigator({
-//     Create: {
-//         screen: HomePage,
-//         navigationOptions:{
-//             tabBarLabel: 'Create',
-//             tabBarIcon: ({tintColor}) => (
-//                 <Icon name="plus" size={24} type='evilicon'/>
-//             )
-//         }
-//     },
-//     Search: {
-//         screen: HomePage,
-//         navigationOptions:{
-//             tabBarLabel: 'Create',
-//             tabBarIcon: ({tintColor}) => (
-//                 <Icon name="search" size={24} type='evilicon'/>
-//             )
-//         }
-//     },
-//     WishList: {
-//         screen: HomePage,
-//         navigationOptions:{
-//             tabBarLabel: 'Create',
-//             tabBarIcon: ({tintColor}) => (
-//                 <Icon name="heart" size={24} type='evilicon'/>
-//             )
-//         }
-//     },
-//     Chat: {
-//         screen: HomePage,
-//         navigationOptions:{
-//             tabBarLabel: 'Create',
-//             tabBarIcon: ({tintColor}) => (
-//                 <Icon name="comment" size={24} type='evilicon'/>
-//             )
-//         }
-//     },
-//     Profile: {
-//         screen: HomePage,
-//         navigationOptions:{
-//             tabBarLabel: 'Create',
-//             tabBarIcon: ({tintColor}) => (
-//                 <Icon
-//                     name='user'
-//                     type='evilicon'
-//                     size={24}
-//                 />
-//             )
-//         }
-//     }
-// });
 
-export default createStackNavigator({
-    Login: {
-        screen: LoginPage,
+export const Tabs = createBottomTabNavigator({
+    Discover: {
+        screen: HomeStack,
+        navigationOptions: {
+            tabBarLabel: 'Discover',
+            title: 'Discover',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="lightbulb-on-outline" size={24} color={tintColor} type='material-community'/>
+            )
+        }
     },
-    Home: {
+    Chat: {
         screen: HomePage,
+        navigationOptions: {
+            tabBarLabel: 'Chat',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="comment-text-multiple-outline" size={22} color={tintColor} type='material-community'/>
+            )
+        }
+    },
+    Post: {
+        screen: PostStack,
+        navigationOptions: {
+            tabBarLabel: 'Your post',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="book-plus" size={22} color={tintColor} type='material-community'/>
+
+            )
+        }
+    },
+    WishList: {
+        screen: HomePage,
+        navigationOptions: {
+            tabBarLabel: 'Wish List',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="heart-outline" size={22} color={tintColor} type='material-community'/>
+            )
+        }
+    },
+    Profile: {
+        screen: HomePage,
+        navigationOptions: {
+            tabBarLabel: 'Me',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name='account-outline' type='material-community' color={tintColor} size={25}/>
+            )
+        }
+    }
+}, {
+    initialRouteName: 'Post',
+    lazyLoad: true,
+    animationEnabled: true,
+    tabBarOptions: {
+        activeTintColor: '#f88523',
+        inactiveTintColor: 'gray',
+        // style: {
+        //     backgroundColor: 'rgba(186, 220, 88, 0.5)',
+        // }
+    },
+});
+
+export const Root = createStackNavigator({
+    Login:{
+        screen: LoginPage
     },
     SignUp: {
         screen: SignUpPage
+    },
+    Tabs: {
+        screen: Tabs,
+    },
+    AddNewPost: {
+        screen: AddNewPostStack,
     }
-    // Tab:{
-    //     screen: Tabs
-    // }
+}, {
+    mode: 'modal',
+    headerMode: 'none'
 });
 
+export default class App extends Component {
+    render() {
+        return <Root/>;
+    }
+}
