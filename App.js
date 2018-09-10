@@ -1,15 +1,40 @@
 import React, {Component} from 'react';
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import {View, Text} from 'react-native';
+import {createStackNavigator, TabNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
-import {HomePage, HomeStack} from "./component/HomePage";
+import {HomePage} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
-import {PostStack} from "./component/PostPage/PostPage";
-import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 
-
+export const HomeStack = createStackNavigator({
+    Home: {
+        screen: HomePage,
+        navigationOptions: {
+            title: 'Discover'
+        }
+    }
+});
 
 export const Tabs = createBottomTabNavigator({
+    Create: {
+        screen: HomePage,
+        navigationOptions: {
+            tabBarLabel: 'Your post',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="book-plus" size={22} color={tintColor} type='material-community'/>
+
+            )
+        }
+    },
+    WishList: {
+        screen: HomePage,
+        navigationOptions: {
+            tabBarLabel: 'Wish List',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="heart-outline" size={22} color={tintColor} type='material-community'/>
+            )
+        }
+    },
     Discover: {
         screen: HomeStack,
         navigationOptions: {
@@ -29,25 +54,6 @@ export const Tabs = createBottomTabNavigator({
             )
         }
     },
-    Post: {
-        screen: PostStack,
-        navigationOptions: {
-            tabBarLabel: 'Your post',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="book-plus" size={22} color={tintColor} type='material-community'/>
-
-            )
-        }
-    },
-    WishList: {
-        screen: HomePage,
-        navigationOptions: {
-            tabBarLabel: 'Wish List',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="heart-outline" size={22} color={tintColor} type='material-community'/>
-            )
-        }
-    },
     Profile: {
         screen: HomePage,
         navigationOptions: {
@@ -58,7 +64,7 @@ export const Tabs = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Post',
+    initialRouteName: 'Discover',
     lazyLoad: true,
     animationEnabled: true,
     tabBarOptions: {
@@ -70,26 +76,9 @@ export const Tabs = createBottomTabNavigator({
     },
 });
 
-export const Root = createStackNavigator({
-    Login:{
-        screen: LoginPage
-    },
-    SignUp: {
-        screen: SignUpPage
-    },
-    Tabs: {
-        screen: Tabs,
-    },
-    AddNewPost: {
-        screen: AddNewPostStack,
-    }
-}, {
-    mode: 'modal',
-    headerMode: 'none'
-});
 
 export default class App extends Component {
-    render() {
-        return <Root/>;
+    render () {
+        return <Tabs/>;
     }
 }
