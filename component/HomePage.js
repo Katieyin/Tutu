@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, Image} from 'react-native';
 import {Icon, Button, SearchBar} from 'react-native-elements';
+import {createStackNavigator} from "react-navigation";
 
 export class HomePage extends Component {
 
@@ -28,3 +29,11 @@ export class HomePage extends Component {
     }
 }
 
+export const HomeStack = createStackNavigator({
+    Home: {
+        screen: HomePage,
+        navigationOptions: {
+            title: 'Discover'
+        }
+    }
+});
