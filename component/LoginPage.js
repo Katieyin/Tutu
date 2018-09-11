@@ -3,6 +3,7 @@ import {FormInput, Button, Text, FormValidationMessage} from 'react-native-eleme
 import {View, Image, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import firebase from 'react-native-firebase';
 import {StyleSheet} from 'react-native';
+import {NavigationActions, StackActions} from 'react-navigation';
 
 export class LoginPage extends Component {
     static navigationOptions = {header: null};
@@ -13,6 +14,34 @@ export class LoginPage extends Component {
         password: '',
         errorMessage: '',
     };
+
+    resetNavigation = () => {
+        const resetAction = StackActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Tabs' }),
+            ],
+        });
+        this.props.navigation.dispatch(resetAction);
+    }
+
+    handleLogin = () => {
+        const {email, password} = this.state;
+        const {navigation} = this.props;
+        if (!email || !password) {
+            return;
+        }
+        this.setState({loading: true});
+        firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+            this.resetNavigation();
+        }).catch((error) => {
+            // Handle Errors here.
+            this.setState({loading: false});
+            const errorMessage = 'Wrong email or password';
+            console.log(errorMessage);
+            this.setState({errorMessage});
+        });
+    }
 
     render() {
         const {errorMessage, loading} = this.state;
@@ -77,31 +106,12 @@ export class LoginPage extends Component {
         );
     }
 
-
-    handleLogin = () => {
-        const {email, password} = this.state;
-        const {navigation} = this.props;
-        if (!email || !password) {
-            return;
-        }
-        this.setState({loading: true});
-        firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
-            this.props.navigation.navigate('Home')
-        }).catch((error) => {
-            // Handle Errors here.
-            this.setState({loading: false});
-            const errorMessage = 'Wrong email or password';
-            console.log(errorMessage);
-            this.setState({errorMessage});
-        });
-    }
-
 }
 
 const styles = StyleSheet.create({
     loginContainer: {
         flex: 1,
-        backgroundColor: '#badc58'
+        // backgroundColor: '#badc58'
     },
     logoContainer: {
         alignItems: 'center',

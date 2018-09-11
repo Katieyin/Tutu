@@ -6,12 +6,13 @@ import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
 import {PostStack} from "./component/PostPage/PostPage";
 import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
+import {DiscoverStack} from "./component/Discover/DiscoverPage";
 
 
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
-        screen: HomeStack,
+        screen: DiscoverStack,
         navigationOptions: {
             tabBarLabel: 'Discover',
             title: 'Discover',
@@ -58,7 +59,7 @@ export const Tabs = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Post',
+    initialRouteName: 'Discover',
     lazyLoad: true,
     animationEnabled: true,
     tabBarOptions: {
@@ -84,7 +85,6 @@ export const Root = createStackNavigator({
         screen: AddNewPostStack,
     }
 }, {
-    mode: 'modal',
     headerMode: 'none'
 });
 
