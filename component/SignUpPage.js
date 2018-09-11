@@ -88,12 +88,20 @@ export class SignUpPage extends Component {
                 {passwordError && this.state.confirmPassword && this.state.password ?
                     <FormValidationMessage>{passwordError}</FormValidationMessage> : null}
 
-                <Button
-                    title="Sign up"
-                    textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}
-                    buttonStyle={styles.signUpButton}
-                    onPress={this.handleSignup}
-                />
+                <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 20}}>
+                    <Button
+                        title="Sign up"
+                        textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}
+                        buttonStyle={styles.signUpButton}
+                        onPress={this.handleSignup}
+                    />
+                    <Button
+                        title='Cancel'
+                        buttonStyle={styles.signUpButton}
+                        textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}
+                        onPress={() => this.props.navigation.navigate('Login')}
+                    />
+                </View>
             </KeyboardAvoidingView>
         );
     }
@@ -179,17 +187,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 10,
     },
-    signUpButtonContainer: {
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-    },
     signUpButton: {
         backgroundColor: '#f88523',
+        paddingHorizontal: 10,
         borderRadius: 10,
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 20
+        justifyContent: 'center',
+        width: 150,
+    },
 
-    }
 
 });
