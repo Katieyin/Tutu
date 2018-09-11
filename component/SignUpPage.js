@@ -163,7 +163,7 @@ export class SignUpPage extends Component {
 const styles = StyleSheet.create({
     signUpContainer: {
         flex: 1,
-        backgroundColor: '#badc58',
+        // backgroundColor: '#badc58',
         justifyContent: 'center',
     },
     logoContainer: {

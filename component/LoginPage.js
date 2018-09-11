@@ -111,7 +111,7 @@ export class LoginPage extends Component {
 const styles = StyleSheet.create({
     loginContainer: {
         flex: 1,
-        backgroundColor: '#badc58'
+        // backgroundColor: '#badc58'
     },
     logoContainer: {
         alignItems: 'center',
