@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {FormLabel, FormInput, Button, Text, FormValidationMessage} from 'react-native-elements';
 import {View, Button as ButtonText, StyleSheet, Image, KeyboardAvoidingView} from 'react-native';
 import firebase from 'react-native-firebase';
