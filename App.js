@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
-import {HomePage, HomeStack} from "./component/HomePage";
+import {HomePage} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
 import {PostStack} from "./component/PostPage/PostPage";
 import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 import {DiscoverStack} from "./component/Discover/DiscoverPage";
-import {ProfilePage, ProfileStack} from "./component/Profile/ProfilePage";
+import {ProfileStack} from "./component/Profile/ProfilePage";
+import {EditProfilePage} from "./component/Profile/EditProfilePage";
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
@@ -71,17 +72,20 @@ export const Tabs = createBottomTabNavigator({
 });
 
 export const Root = createStackNavigator({
-    // Login:{
-    //     screen: LoginPage
-    // },
-    // SignUp: {
-    //     screen: SignUpPage
-    // },
+    Login:{
+        screen: LoginPage
+    },
+    SignUp: {
+        screen: SignUpPage
+    },
     Tabs: {
         screen: Tabs,
     },
     AddNewPost: {
         screen: AddNewPostStack,
+    },
+    EditProfile: {
+        screen: EditProfilePage
     }
 }, {
     headerMode: 'none'
