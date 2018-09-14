@@ -8,7 +8,7 @@ import {PostStack} from "./component/PostPage/PostPage";
 import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 import {DiscoverStack} from "./component/Discover/DiscoverPage";
 import {ProfileStack} from "./component/Profile/ProfilePage";
-import {EditProfilePage} from "./component/Profile/EditProfilePage";
+import {EditProfilePage, EditProfileStack} from "./component/Profile/EditProfilePage";
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
@@ -85,7 +85,7 @@ export const Root = createStackNavigator({
         screen: AddNewPostStack,
     },
     EditProfile: {
-        screen: EditProfilePage
+        screen: EditProfileStack
     }
 }, {
     headerMode: 'none'
