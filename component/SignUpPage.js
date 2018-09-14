@@ -126,17 +126,15 @@ export class SignUpPage extends Component {
         }
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(({uid}) => {
-                // const user = firebase.auth().currentUser();
-                // user.updateProfile({
-                //     displayName: name,
-                // }).then(() => {
-                //     firebase.getUsersRef().child(uid).set({
-                //         email,
-                //         displayName: name
-                //     })
-                // }).catch((error) => {
-                //     console.log(error);
-                // })
+                const db = firebase.firestore().collection('users').doc(uid);
+                db.set({
+                    username: this.state.username,
+                    email: email
+                }).then(() => {
+                }).catch((error) => {
+                    console.log(error)
+                });
+
                 console.log(uid);
                 this.props.navigation.navigate('Login');
             })
