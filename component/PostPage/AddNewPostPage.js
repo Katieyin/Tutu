@@ -20,7 +20,6 @@ export class AddNewPostPage extends Component {
         address: '',
         requiredError: '',
         requiredCheckboxError: ''
-
     };
 
     static navigationOptions = {

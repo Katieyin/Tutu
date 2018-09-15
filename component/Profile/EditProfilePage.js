@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {Button, Avatar, List, ListItem, Icon, Tile} from 'react-native-elements';
-import {View, StyleSheet, ScrollView, Text, TouchableOpacity} from 'react-native';
-import {ProfilePage} from "./ProfilePage";
+import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS} from 'react-native';
 import {createStackNavigator} from "react-navigation";
+import firebase from 'react-native-firebase';
 
 export class EditProfilePage extends Component {
     static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+
         return {
             title: 'Edit Profile',
             headerLeft: (
@@ -19,7 +21,7 @@ export class EditProfilePage extends Component {
             ),
             headerRight: (
                 <View style={{marginRight: 10}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => params.handleDone()}>
                         <Text style={{fontSize: 16}}>Done</Text>
                     </TouchableOpacity>
                 </View>
@@ -27,41 +29,70 @@ export class EditProfilePage extends Component {
         }
     }
 
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '-',
+            school: '-',
+            linkedIn: '-',
+            phone: '-',
+            email: '-'
+        };
+        this.setUserProfileState();
+
+    }
+
+    componentDidMount() {
+        console.log('in componentDidMount');
+        this.setUserProfileState();
+        this.props.navigation.setParams({
+            handleDone: this.handleDone
+        })
+    }
+
+    handleDone = () => {
+        if (!this.state.username) {
+            AlertIOS.alert('Username cannot be empty', '', [
+                {
+                    text: 'Confirm',
+                },
+            ])
+        } else {
+            console.log('in submit');
+            const user = firebase.auth().currentUser;
+            const db = firebase.firestore().collection('users').doc(user.uid);
+            db.set({
+                username: this.state.username,
+                school: this.state.school,
+                linkedIn: this.state.linkedIn,
+                phone: this.state.phone,
+                email: this.state.email
+            }).then(() => {
+                console.log('in submit success');
+                this.props.navigation.navigate('Profile');
+            }).catch((error) => {
+                console.log(error)
+            });
+        }
+    }
+
+    setUserProfileState = () => {
+        const user = firebase.auth().currentUser;
+        firebase.firestore().collection('users').doc(user.uid).get().then((user) => {
+            console.log('success grabbing data');
+            const userProfile = user.data();
+            this.setState({
+                username: userProfile.username,
+                school: userProfile.school,
+                linkedIn: userProfile.linkedIn,
+                phone: userProfile.phone,
+                email: userProfile.email
+            });
+        });
+    }
+
     render() {
-        const list = [
-            {
-                title: 'Username',
-                rightTitle: 'Katie',
-                icon: 'account',
-                iconType: 'material-community',
-            },
-            {
-                title: 'Email',
-                rightTitle: 'ttt@tt.com',
-                icon: 'email',
-                iconType: 'material-community',
-            },
-            {
-                title: 'School',
-                rightTitle: 'Carleton U',
-                icon: 'school',
-                iconType: 'material-community',
-            },
-            {
-                title: 'LinkedIn',
-                rightTitle: 'http://123.com',
-                icon: 'linkedin-box',
-                iconType: 'material-community',
-            },
-            {
-                title: 'Phone',
-                rightTitle: '123-123-1234',
-                icon: 'phone',
-                iconType: 'material-community',
-            },
-
-        ];
-
         return (
             <ScrollView behavior={'padding'}>
                 <View style={styles.avatarContainer}>
@@ -77,19 +108,56 @@ export class EditProfilePage extends Component {
                 </View>
 
                 <List style={{marginTop: 5}}>
-                    {
-                        list.map((item) => (
-                            <ListItem
-                                key={item.title}
-                                title={item.title}
-                                rightTitle={item.rightTitle ? item.rightTitle : null}
-                                hideChevron={true}
-                                leftIcon={{name: item.icon, type: item.iconType}}
-                                containerStyle={{height: 50}}
-                                textInput={true}
-                            />
-                        ))
-                    }
+                    <ListItem
+                        key={'Username'}
+                        title={'Username'}
+                        rightTitle={this.state.username ? this.state.username : null}
+                        hideChevron={true}
+                        leftIcon={{name: 'account', type: 'material-community'}}
+                        containerStyle={{height: 50}}
+                        textInput={true}
+                        textInputOnChangeText={username => this.setState({username})}
+                    />
+                    <ListItem
+                        key={'School'}
+                        title={'School'}
+                        rightTitle={this.state.school ? this.state.school : null}
+                        hideChevron={true}
+                        leftIcon={{name: 'school', type: 'material-community'}}
+                        containerStyle={{height: 50}}
+                        textInput={true}
+                        textInputOnChangeText={school => this.setState({school})}
+                    />
+                    <ListItem
+                        key={'LinkedIn'}
+                        title={'LinkedIn'}
+                        rightTitle={this.state.linkedIn ? this.state.linkedIn : null}
+                        hideChevron={true}
+                        leftIcon={{name: 'linkedin-box', type: 'material-community'}}
+                        containerStyle={{height: 50}}
+                        textInput={true}
+                        textInputOnChangeText={linkedIn => this.setState({linkedIn})}
+                    />
+                    <ListItem
+                        key={'Phone'}
+                        title={'Phone'}
+                        rightTitle={this.state.phone ? this.state.phone : null}
+                        hideChevron={true}
+                        leftIcon={{name: 'phone', type: 'material-community'}}
+                        containerStyle={{height: 50}}
+                        textInput={true}
+                        textInputOnChangeText={phone => this.setState({phone})}
+                        textInputKeyboardType={'phone-pad'}
+                    />
+                    <ListItem
+                        key={'Email'}
+                        title={'Email'}
+                        rightTitle={this.state.email}
+                        hideChevron={true}
+                        leftIcon={{name: 'email', type: 'material-community'}}
+                        containerStyle={{height: 50}}
+                        textInput={false}
+                    />
                 </List>
             </ScrollView>
         )

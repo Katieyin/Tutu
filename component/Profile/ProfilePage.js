@@ -21,6 +21,27 @@ export class ProfilePage extends Component {
         }
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            username: '',
+            school: '',
+            linkedIn: '',
+            phone: '',
+            email: ''
+        };
+        this.setUserProfileState();
+
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('in shouldComponentUpdate');
+        return nextState.username != this.state.username ||
+            nextState.school != this.state.school ||
+            nextState.linkedIn != this.state.linkedIn ||
+            nextState.phone != this.state.phone;
+    }
+
     resetNavigation = () => {
         const resetAction = StackActions.reset({
             index: 0,
@@ -41,46 +62,60 @@ export class ProfilePage extends Component {
             {
                 text: 'Yes',
                 onPress: () => {
-                    // firebase.auth().signOut().then(() => {
-                    this.resetNavigation()
-                    // })
+                    firebase.auth().signOut().then(() => {
+                        this.resetNavigation()
+                    })
                 },
             }
         ])
+    }
+
+    setUserProfileState = () => {
+        const user = firebase.auth().currentUser;
+        firebase.firestore().collection('users').doc(user.uid).get().then((user) => {
+            const userProfile = user.data();
+            this.setState({
+                username: userProfile.username,
+                school: userProfile.school,
+                linkedIn: userProfile.linkedIn,
+                phone: userProfile.phone,
+                email: userProfile.email
+            });
+        });
     }
 
     render() {
         const list = [
             {
                 title: 'Username',
-                rightTitle: 'Katie',
+                rightTitle: this.state.username,
                 icon: 'account',
                 iconType: 'material-community',
             },
             {
-                title: 'Email',
-                rightTitle: 'ttt@tt.com',
-                icon: 'email',
-                iconType: 'material-community',
-            },
-            {
                 title: 'School',
-                rightTitle: 'Carleton U',
+                rightTitle: this.state.school,
                 icon: 'school',
                 iconType: 'material-community',
             },
             {
                 title: 'LinkedIn',
-                rightTitle: 'http://123.com',
+                rightTitle: this.state.linkedIn,
                 icon: 'linkedin-box',
                 iconType: 'material-community',
             },
             {
                 title: 'Phone',
-                rightTitle: '123-123-1234',
+                rightTitle: this.state.phone,
                 icon: 'phone',
                 iconType: 'material-community',
             },
+            {
+                title: 'Email',
+                rightTitle: this.state.email,
+                icon: 'email',
+                iconType: 'material-community',
+            }
 
         ];
 
@@ -101,7 +136,7 @@ export class ProfilePage extends Component {
                             <ListItem
                                 key={item.title}
                                 title={item.title}
-                                rightTitle={item.rightTitle ? item.rightTitle : null}
+                                rightTitle={item.rightTitle ? item.rightTitle : '--'}
                                 hideChevron={true}
                                 leftIcon={{name: item.icon, type: item.iconType}}
                                 containerStyle={{height: 50}}
