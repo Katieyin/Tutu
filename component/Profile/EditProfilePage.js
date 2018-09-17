@@ -30,13 +30,13 @@ export class EditProfilePage extends Component {
     }
 
     componentWillMount() {
-        const params = this.props.navigation.state.params.user;
+        const user = this.props.navigation.state.params.user;
         this.setState({
-            username: params.username,
-            school: params.school,
-            linkedIn: params.linkedIn,
-            phone: params.phone,
-            email: params.email
+            username: user.username,
+            school: user.school,
+            linkedIn: user.linkedIn,
+            phone: user.phone,
+            email: user.email
         });
 
     }
