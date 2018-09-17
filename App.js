@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
-import {HomePage, HomeStack} from "./component/HomePage";
+import {HomePage} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
 import {PostStack} from "./component/PostPage/PostPage";
 import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 import {DiscoverStack} from "./component/Discover/DiscoverPage";
-
-
+import {ProfileStack} from "./component/Profile/ProfilePage";
+import {EditProfilePage, EditProfileStack} from "./component/Profile/EditProfilePage";
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
@@ -50,7 +50,7 @@ export const Tabs = createBottomTabNavigator({
         }
     },
     Profile: {
-        screen: HomePage,
+        screen: ProfileStack,
         navigationOptions: {
             tabBarLabel: 'Me',
             tabBarIcon: ({tintColor}) => (
@@ -59,7 +59,7 @@ export const Tabs = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Discover',
+    initialRouteName: 'Profile',
     lazyLoad: true,
     animationEnabled: true,
     tabBarOptions: {
@@ -83,6 +83,9 @@ export const Root = createStackNavigator({
     },
     AddNewPost: {
         screen: AddNewPostStack,
+    },
+    EditProfile: {
+        screen: EditProfileStack
     }
 }, {
     headerMode: 'none'
