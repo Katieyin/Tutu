@@ -7,15 +7,13 @@ import {NavigationActions, StackActions} from 'react-navigation';
 
 export class ProfilePage extends Component {
     static navigationOptions = ({navigation}) => {
-        console.log(navigation.state);
+        const {params = {}} = navigation.state;
         return {
             title: 'Profile',
             headerRight: (
                 <View style={{marginRight: 10}}>
                     <Icon name="square-edit-outline" size={25} type='material-community' color='#88959F'
-                          onPress={() => {
-                              navigation.navigate('EditProfile')
-                          }}/>
+                          onPress={() => params.handleEditProfile()}/>
                 </View>
             ),
         }
@@ -34,12 +32,10 @@ export class ProfilePage extends Component {
 
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('in shouldComponentUpdate');
-        return nextState.username != this.state.username ||
-            nextState.school != this.state.school ||
-            nextState.linkedIn != this.state.linkedIn ||
-            nextState.phone != this.state.phone;
+    componentDidMount() {
+        this.props.navigation.setParams({
+            handleEditProfile: this.handleEditProfile
+        })
     }
 
     resetNavigation = () => {
@@ -51,6 +47,17 @@ export class ProfilePage extends Component {
             ],
         });
         this.props.navigation.dispatch(resetAction);
+    }
+
+    handleEditProfile = () => {
+        const userProfile = {
+            username: this.state.username,
+            school: this.state.school,
+            linkedIn: this.state.linkedIn,
+            phone: this.state.phone,
+            email: this.state.email
+        }
+        this.props.navigation.navigate('EditProfile', {user: userProfile, setProfile: this.setUserProfileState});
     }
 
     handleSignout = () => {
@@ -137,6 +144,7 @@ export class ProfilePage extends Component {
                                 key={item.title}
                                 title={item.title}
                                 rightTitle={item.rightTitle ? item.rightTitle : '--'}
+                                rightTitleStyle={{color: '#808080'}}
                                 hideChevron={true}
                                 leftIcon={{name: item.icon, type: item.iconType}}
                                 containerStyle={{height: 50}}

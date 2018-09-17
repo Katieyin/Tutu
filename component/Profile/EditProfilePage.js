@@ -29,23 +29,19 @@ export class EditProfilePage extends Component {
         }
     }
 
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '-',
-            school: '-',
-            linkedIn: '-',
-            phone: '-',
-            email: '-'
-        };
-        this.setUserProfileState();
+    componentWillMount() {
+        const params = this.props.navigation.state.params.user;
+        this.setState({
+            username: params.username,
+            school: params.school,
+            linkedIn: params.linkedIn,
+            phone: params.phone,
+            email: params.email
+        });
 
     }
 
     componentDidMount() {
-        console.log('in componentDidMount');
-        this.setUserProfileState();
         this.props.navigation.setParams({
             handleDone: this.handleDone
         })
@@ -59,7 +55,6 @@ export class EditProfilePage extends Component {
                 },
             ])
         } else {
-            console.log('in submit');
             const user = firebase.auth().currentUser;
             const db = firebase.firestore().collection('users').doc(user.uid);
             db.set({
@@ -69,27 +64,12 @@ export class EditProfilePage extends Component {
                 phone: this.state.phone,
                 email: this.state.email
             }).then(() => {
-                console.log('in submit success');
-                this.props.navigation.navigate('Profile');
+                this.props.navigation.state.params.setProfile();
+                this.props.navigation.navigate('Profile', this.state.username);
             }).catch((error) => {
                 console.log(error)
             });
         }
-    }
-
-    setUserProfileState = () => {
-        const user = firebase.auth().currentUser;
-        firebase.firestore().collection('users').doc(user.uid).get().then((user) => {
-            console.log('success grabbing data');
-            const userProfile = user.data();
-            this.setState({
-                username: userProfile.username,
-                school: userProfile.school,
-                linkedIn: userProfile.linkedIn,
-                phone: userProfile.phone,
-                email: userProfile.email
-            });
-        });
     }
 
     render() {
@@ -153,6 +133,7 @@ export class EditProfilePage extends Component {
                         key={'Email'}
                         title={'Email'}
                         rightTitle={this.state.email}
+                        rightTitleStyle={{color: '#808080'}}
                         hideChevron={true}
                         leftIcon={{name: 'email', type: 'material-community'}}
                         containerStyle={{height: 50}}
