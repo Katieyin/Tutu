@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Avatar, List, ListItem, Icon, Tile} from 'react-native-elements';
-import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS} from 'react-native';
+import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS, ImagePickerIOS, Image} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import firebase from 'react-native-firebase';
+import CameraRollPicker from 'react-native-camera-roll-picker';
 
 export class EditProfilePage extends Component {
     static navigationOptions = ({navigation}) => {
@@ -29,6 +30,11 @@ export class EditProfilePage extends Component {
         }
     }
 
+    constructor() {
+        super();
+        this.state = { image: null };
+    }
+
     componentWillMount() {
         const user = this.props.navigation.state.params.user;
         this.setState({
@@ -44,8 +50,9 @@ export class EditProfilePage extends Component {
     componentDidMount() {
         this.props.navigation.setParams({
             handleDone: this.handleDone
-        })
+        });
     }
+
 
     handleDone = () => {
         if (!this.state.username) {
@@ -72,6 +79,17 @@ export class EditProfilePage extends Component {
         }
     }
 
+    getSelectedImages = () => {
+        console.log('aaa');
+    };
+
+    pickImage= () => {
+        // openSelectDialog(config, successCallback, errorCallback);
+        ImagePickerIOS.openSelectDialog({}, imageUri => {
+            this.setState({image: imageUri});
+        }, error => console.error(error));
+    }
+
     render() {
         return (
             <ScrollView behavior={'padding'}>
@@ -82,7 +100,7 @@ export class EditProfilePage extends Component {
                         source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
                         activeOpacity={0.7}
                     />
-                    <TouchableOpacity style={{marginTop: 10}}>
+                    <TouchableOpacity style={{marginTop: 10}} onPress={this.pickImage}>
                         <Text style={{fontSize: 14, fontWeight: 'bold', color: '#f88523'}}>Change Profile Photo</Text>
                     </TouchableOpacity>
                 </View>
