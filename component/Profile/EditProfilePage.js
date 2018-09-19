@@ -3,7 +3,7 @@ import {Button, Avatar, List, ListItem, Icon, Tile} from 'react-native-elements'
 import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS, ImagePickerIOS, Image} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import firebase from 'react-native-firebase';
-import CameraRollPicker from 'react-native-camera-roll-picker';
+import ActionSheet from 'react-native-actionsheet';
 
 export class EditProfilePage extends Component {
     static navigationOptions = ({navigation}) => {
@@ -28,12 +28,7 @@ export class EditProfilePage extends Component {
                 </View>
             ),
         }
-    }
-
-    constructor() {
-        super();
-        this.state = { image: null };
-    }
+    };
 
     componentWillMount() {
         const user = this.props.navigation.state.params.user;
@@ -42,7 +37,8 @@ export class EditProfilePage extends Component {
             school: user.school,
             linkedIn: user.linkedIn,
             phone: user.phone,
-            email: user.email
+            email: user.email,
+            avatar: ''
         });
 
     }
@@ -52,7 +48,6 @@ export class EditProfilePage extends Component {
             handleDone: this.handleDone
         });
     }
-
 
     handleDone = () => {
         if (!this.state.username) {
@@ -76,19 +71,38 @@ export class EditProfilePage extends Component {
             }).catch((error) => {
                 console.log(error)
             });
-        }
-    }
 
-    getSelectedImages = () => {
-        console.log('aaa');
+            const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
+            console.log(storage);
+            console.log(this.state.avatar);
+            storage.put(this.state.avatar).then(() => {
+                console.log('success upload avatar');
+            });
+        }
     };
 
-    pickImage= () => {
-        // openSelectDialog(config, successCallback, errorCallback);
-        ImagePickerIOS.openSelectDialog({}, imageUri => {
-            this.setState({image: imageUri});
-        }, error => console.error(error));
-    }
+    showActionSheet = () => {
+        this.ActionSheet.show()
+    };
+
+    takePhoto = () => {
+        ImagePickerIOS.openCameraDialog({}, (imageUri) => {
+            console.log('success');
+            console.log(imageUri);
+        }, () => {
+            console.log('cancel');
+        });
+    };
+
+    pickImage = () => {
+        ImagePickerIOS.openSelectDialog({}, (imageUri) => {
+            console.log('success');
+            console.log(imageUri);
+            this.setState({avatar: imageUri});
+        }, () => {
+            console.log('cancel');
+        });
+    };
 
     render() {
         return (
@@ -100,9 +114,22 @@ export class EditProfilePage extends Component {
                         source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
                         activeOpacity={0.7}
                     />
-                    <TouchableOpacity style={{marginTop: 10}} onPress={this.pickImage}>
+                    <TouchableOpacity style={{marginTop: 10}} onPress={this.showActionSheet}>
                         <Text style={{fontSize: 14, fontWeight: 'bold', color: '#f88523'}}>Change Profile Photo</Text>
                     </TouchableOpacity>
+                    <ActionSheet
+                        ref={o => this.ActionSheet = o}
+                        title={'Which one do you like ?'}
+                        options={['Take Photo', 'Choose from library', 'Cancel']}
+                        cancelButtonIndex={2}
+                        onPress={(index) => {
+                            if (index == 0) {
+                                this.takePhoto();
+                            } else if (index == 1) {
+                                this.pickImage();
+                            }
+                        }}
+                    />
                 </View>
 
                 <List style={{marginTop: 5}}>
