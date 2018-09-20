@@ -4,6 +4,7 @@ import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS, ImagePic
 import {createStackNavigator} from "react-navigation";
 import firebase from 'react-native-firebase';
 import ActionSheet from 'react-native-actionsheet';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 export class EditProfilePage extends Component {
     static navigationOptions = ({navigation}) => {
@@ -39,7 +40,8 @@ export class EditProfilePage extends Component {
             phone: user.phone,
             email: user.email,
             avatar: user.avatar,
-            imageUri: ''
+            imageUri: '',
+            visible: false
         });
 
     }
@@ -58,6 +60,9 @@ export class EditProfilePage extends Component {
                 },
             ])
         } else {
+            this.setState({
+                visible: !this.state.visible
+            });
             const user = firebase.auth().currentUser;
             const db = firebase.firestore().collection('users').doc(user.uid);
             db.set({
@@ -70,12 +75,19 @@ export class EditProfilePage extends Component {
                 if (this.state.imageUri) {
                     const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
                     storage.put(this.state.imageUri).then(() => {
+                        this.setState({
+                            visible: !this.state.visible
+                        });
                         console.log('success upload avatar');
                         this.props.navigation.navigate('Profile');
                         this.props.navigation.state.params.setProfile();
+
                     });
                 } else {
                     this.props.navigation.navigate('Profile');
+                    this.setState({
+                        visible: !this.state.visible
+                    });
                 }
             }).catch((error) => {
                 console.log(error)
@@ -112,6 +124,7 @@ export class EditProfilePage extends Component {
     render() {
         return (
             <ScrollView behavior={'padding'}>
+                <Spinner visible={this.state.visible} textContent={"Updating..."} textStyle={{color: '#FFF'}}/>
                 <View style={styles.avatarContainer}>
                     <Avatar
                         xlarge
