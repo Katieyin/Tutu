@@ -22,11 +22,12 @@ export class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            avatar: '',
             username: '',
             school: '',
             linkedIn: '',
             phone: '',
-            email: ''
+            email: '',
         };
         this.setUserProfileState();
 
@@ -55,8 +56,9 @@ export class ProfilePage extends Component {
             school: this.state.school,
             linkedIn: this.state.linkedIn,
             phone: this.state.phone,
-            email: this.state.email
-        }
+            email: this.state.email,
+            avatar: this.state.avatar,
+        };
         this.props.navigation.navigate('EditProfile', {user: userProfile, setProfile: this.setUserProfileState});
     }
 
@@ -88,6 +90,11 @@ export class ProfilePage extends Component {
                 phone: userProfile.phone,
                 email: userProfile.email
             });
+        });
+        const storage1 = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
+        storage1.getDownloadURL().then((result) => {
+            console.log('avatar loaded');
+            this.setState({avatar: result})
         });
     }
 
@@ -132,7 +139,7 @@ export class ProfilePage extends Component {
                     <Avatar
                         xlarge
                         rounded
-                        source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+                        source={{uri: this.state.avatar}}
                         activeOpacity={0.7}
                     />
                 </View>

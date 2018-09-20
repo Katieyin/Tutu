@@ -38,7 +38,8 @@ export class EditProfilePage extends Component {
             linkedIn: user.linkedIn,
             phone: user.phone,
             email: user.email,
-            avatar: ''
+            avatar: user.avatar,
+            imageUri: ''
         });
 
     }
@@ -66,18 +67,21 @@ export class EditProfilePage extends Component {
                 phone: this.state.phone,
                 email: this.state.email
             }).then(() => {
-                this.props.navigation.state.params.setProfile();
-                this.props.navigation.navigate('Profile', this.state.username);
+                if (this.state.imageUri) {
+                    const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
+                    storage.put(this.state.imageUri).then(() => {
+                        console.log('success upload avatar');
+                        this.props.navigation.navigate('Profile');
+                        this.props.navigation.state.params.setProfile();
+                    });
+                } else {
+                    this.props.navigation.navigate('Profile');
+                }
             }).catch((error) => {
                 console.log(error)
             });
 
-            const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
-            console.log(storage);
-            console.log(this.state.avatar);
-            storage.put(this.state.avatar).then(() => {
-                console.log('success upload avatar');
-            });
+
         }
     };
 
@@ -96,9 +100,10 @@ export class EditProfilePage extends Component {
 
     pickImage = () => {
         ImagePickerIOS.openSelectDialog({}, (imageUri) => {
-            console.log('success');
-            console.log(imageUri);
-            this.setState({avatar: imageUri});
+            this.setState({
+                imageUri: imageUri,
+                avatar: imageUri
+            });
         }, () => {
             console.log('cancel');
         });
@@ -111,7 +116,7 @@ export class EditProfilePage extends Component {
                     <Avatar
                         xlarge
                         rounded
-                        source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
+                        source={{uri: this.state.avatar}}
                         activeOpacity={0.7}
                     />
                     <TouchableOpacity style={{marginTop: 10}} onPress={this.showActionSheet}>
