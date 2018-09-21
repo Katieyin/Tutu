@@ -91,10 +91,16 @@ export class ProfilePage extends Component {
                 email: userProfile.email
             });
         });
-        const storage1 = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
-        storage1.getDownloadURL().then((result) => {
+        const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
+        storage.getDownloadURL().then((result) => {
             console.log('avatar loaded');
             this.setState({avatar: result})
+        }).catch((error) => {
+            console.log(error);
+            const userDefaultAvatarRef = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/user_avatar.png');
+            userDefaultAvatarRef.getDownloadURL().then((result) => {
+                this.setState({avatar: result})
+            })
         });
     }
 
