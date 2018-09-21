@@ -143,7 +143,7 @@ export class SignUpPage extends Component {
                 console.log(message);
                 console.log(code);
                 if (code === 'auth/weak-password') {
-                    this.setState({passwordError: message});
+                    this.setState({passwordError: 'Your password is too weak'});
                 } else if (code === 'auth/email-already-in-use') {
                     this.setState({emailError: message});
                 } else if (code === 'auth/invalid-email') {

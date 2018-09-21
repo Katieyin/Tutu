@@ -59,7 +59,7 @@ export const Tabs = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Profile',
+    initialRouteName: 'Post',
     lazyLoad: true,
     animationEnabled: true,
     tabBarOptions: {

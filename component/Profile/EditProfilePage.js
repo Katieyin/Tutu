@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Avatar, List, ListItem, Icon, Tile} from 'react-native-elements';
-import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS, ImagePickerIOS, Image} from 'react-native';
+import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS, ImagePickerIOS, Image, ImageStore} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import firebase from 'react-native-firebase';
 import ActionSheet from 'react-native-actionsheet';
@@ -74,7 +74,7 @@ export class EditProfilePage extends Component {
             }).then(() => {
                 if (this.state.imageUri) {
                     const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
-                    storage.put(this.state.imageUri).then(() => {
+                    storage.putString(this.state.imageUri).then(() => {
                         this.setState({
                             visible: !this.state.visible
                         });
@@ -103,8 +103,11 @@ export class EditProfilePage extends Component {
 
     takePhoto = () => {
         ImagePickerIOS.openCameraDialog({}, (imageUri) => {
-            console.log('success');
             console.log(imageUri);
+            this.setState({
+                imageUri: imageUri,
+                avatar: imageUri
+            });
         }, () => {
             console.log('cancel');
         });
@@ -137,7 +140,6 @@ export class EditProfilePage extends Component {
                     </TouchableOpacity>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
-                        title={'Which one do you like ?'}
                         options={['Take Photo', 'Choose from library', 'Cancel']}
                         cancelButtonIndex={2}
                         onPress={(index) => {
