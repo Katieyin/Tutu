@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
-import {HomePage} from "./component/HomePage";
+import {HomePage, HomeStack} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
 import {PostStack} from "./component/PostPage/PostPage";
@@ -9,6 +9,8 @@ import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 import {DiscoverStack} from "./component/Discover/DiscoverPage";
 import {ProfileStack} from "./component/Profile/ProfilePage";
 import {EditProfilePage, EditProfileStack} from "./component/Profile/EditProfilePage";
+import {ChatStack} from "./component/Chat/ChatPage";
+import {FavoritesStack} from "./component/Favorites/FavoritesPage";
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
@@ -22,7 +24,7 @@ export const Tabs = createBottomTabNavigator({
         }
     },
     Chat: {
-        screen: HomePage,
+        screen: ChatStack,
         navigationOptions: {
             tabBarLabel: 'Chat',
             tabBarIcon: ({tintColor}) => (
@@ -33,17 +35,17 @@ export const Tabs = createBottomTabNavigator({
     Post: {
         screen: PostStack,
         navigationOptions: {
-            tabBarLabel: 'Your post',
+            tabBarLabel: 'My post',
             tabBarIcon: ({tintColor}) => (
                 <Icon name="book-plus" size={22} color={tintColor} type='material-community'/>
 
             )
         }
     },
-    WishList: {
-        screen: HomePage,
+    Favorites: {
+        screen: FavoritesStack,
         navigationOptions: {
-            tabBarLabel: 'Wish List',
+            tabBarLabel: 'Favorites',
             tabBarIcon: ({tintColor}) => (
                 <Icon name="heart-outline" size={22} color={tintColor} type='material-community'/>
             )
@@ -72,12 +74,12 @@ export const Tabs = createBottomTabNavigator({
 });
 
 export const Root = createStackNavigator({
-    Login:{
-        screen: LoginPage
-    },
-    SignUp: {
-        screen: SignUpPage
-    },
+    // Login:{
+    //     screen: LoginPage
+    // },
+    // SignUp: {
+    //     screen: SignUpPage
+    // },
     Tabs: {
         screen: Tabs,
     },
@@ -93,6 +95,7 @@ export const Root = createStackNavigator({
 
 export default class App extends Component {
     render() {
+        console.disableYellowBox = true;
         return <Root/>;
     }
 }
