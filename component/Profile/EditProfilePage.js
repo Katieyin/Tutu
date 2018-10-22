@@ -84,6 +84,7 @@ export class EditProfilePage extends Component {
 
                     });
                 } else {
+                    this.props.navigation.state.params.setProfile();
                     this.props.navigation.navigate('Profile');
                     this.setState({
                         visible: !this.state.visible
