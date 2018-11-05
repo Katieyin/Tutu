@@ -1,61 +1,61 @@
 export const CATEGORY = [
     {
         label: 'Art History',
-        value: 'art_history',
+        value: 'ARTH',
     }, {
         label: 'Biology',
-        value: 'biology',
+        value: 'BIOL',
     }, {
         label: 'Business',
-        value: 'business',
+        value: 'BUSI',
     },
     {
         label: 'Chemistry',
-        value: 'chemistry',
+        value: 'CHEM',
     },
     {
         label: 'Computer Science',
-        value: 'computer_science',
+        value: 'COMP',
     },
     {
         label: 'Economics',
-        value: 'economics',
+        value: 'ECON',
     },
     {
         label: 'Engineering',
-        value: 'engineering',
+        value: 'ENGI',
     },
     {
         label: 'English',
-        value: 'english',
+        value: 'ENGL',
     },
     {
         label: 'History',
-        value: 'history',
+        value: 'HIST',
     },
     {
         label: 'Journalism',
-        value: 'journalism',
+        value: 'JOUR',
     },
     {
         label: 'Law',
-        value: 'law',
+        value: 'LAW',
     },
     {
-        label: 'Mathematics/Statistics',
-        value: 'math_stat',
+        label: 'Mathematics',
+        value: 'MATH',
     },
     {
         label: 'Physics',
-        value: 'physics',
+        value: 'PHYS',
     },
     {
         label: 'Psychology',
-        value: 'psychology'
+        value: 'PSYC'
     },
     {
         label: 'Other',
-        value: 'other'
+        value: 'OTHER'
     }
 
 
