@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
-import {View, Text, Image, FlatList, StyleSheet} from 'react-native';
-import {Icon, Button, SearchBar} from 'react-native-elements';
+import {View, Text, Image, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {CheckBox, Icon} from 'react-native-elements';
 import {createStackNavigator} from "react-navigation";
 import Search from 'react-native-search-box';
 import firebase from 'react-native-firebase';
+import PTRView from 'react-native-pull-to-refresh';
 
 export class DiscoverPage extends Component {
     constructor() {
         super();
         this.state = {
-            type: 'found',
-            loading: true,
-            list: [],
+            isLoading: true,
             dataSource: [],
         }
     }
@@ -19,50 +18,82 @@ export class DiscoverPage extends Component {
 
     renderItem = ({item}) => {
         const listItem = item.data();
-        console.log(listItem);
         const categoryImage = this.findImage(listItem.selectedCategory);
+
         return (
-            <View>
+            <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}>
                 {categoryImage}
                 <View>
-                    <Text>
-                        {listItem.title}
-                    </Text>
+                    <View style={{flex: 1, justifyContent: 'center', marginLeft: 10}}>
+                        <Text style={{fontSize: 18, marginTop: 10}}>
+                            {listItem.title}
+                        </Text>
+                        <Text style={{marginTop: 5, fontSize: 15, color: '#800000', fontWeight: 'bold'}}>
+                            $ {listItem.price} / hr
+                        </Text>
+                        <View style={{marginLeft: -20, marginTop: -10}}>
+                            <CheckBox title='Online'
+                                      checkedColor={'#f88523'}
+                                      checked={listItem.online}
+                                      containerStyle={{backgroundColor: 'transparent', borderWidth: 0}}
+                                      iconType='material-community'
+                                      size={15}
+                                      fontFamily={'system font'}
+                                      checkedIcon='check-circle'
+                                      uncheckedIcon='checkbox-blank-circle-outline'
+                                      disabled={true}
+                            />
+                            <CheckBox title='Face to face'
+                                      checked={listItem.faceToFace}
+                                      checkedColor={'#f88523'}
+                                      size={15}
+                                      fontFamily={'system font'}
+                                      iconType='material-community'
+                                      checkedIcon='check-circle'
+                                      uncheckedIcon='checkbox-blank-circle-outline'
+                                      disabled={true}
+                                      containerStyle={{
+                                          backgroundColor: 'transparent',
+                                          borderWidth: 0,
+                                          marginTop: -20
+                                      }}/>
+                        </View>
+                    </View>
                 </View>
-            </View>)
+            </TouchableOpacity>)
     };
 
     findImage = (category) => {
         if (category === 'ARTH') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/ARTH.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/ARTH.png")}/>)
         } else if (category === 'BIOL') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/BIOL.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/BIOL.png")}/>)
         } else if (category === 'BUSI') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/BUSI.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/BUSI.png")}/>)
         } else if (category === 'CHEM') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/CHEM.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/CHEM.png")}/>)
         } else if (category === 'COMP') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/COMP.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/COMP.png")}/>)
         } else if (category === 'ECON') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/ECON.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/ECON.png")}/>)
         } else if (category === 'ENGI') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/ENGI.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/ENGI.png")}/>)
         } else if (category === 'ENGL') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/ENGL.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/ENGL.png")}/>)
         } else if (category === 'HIST') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/HIST.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/HIST.png")}/>)
         } else if (category === 'JOUR') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/JOUR.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/JOUR.png")}/>)
         } else if (category === 'LAW') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/LAW.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/LAW.png")}/>)
         } else if (category === 'MATH') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/MATH.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/MATH.png")}/>)
         } else if (category === 'PHYS') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/PHYS.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/PHYS.png")}/>)
         } else if (category === 'PSYC') {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/PSYC.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/PSYC.png")}/>)
         } else {
-            return (<Image style={{width: 100, height: 100}} source={require("../../asset/categories/OTHER.png")}/>)
+            return (<Image style={styles.categoryImage} source={require("../../asset/categories/OTHER.png")}/>)
         }
     }
 
@@ -71,34 +102,48 @@ export class DiscoverPage extends Component {
         firebase.firestore().collection('courses').get()
             .then(snapshot => {
                 this.setState({
-                    dataSource: snapshot._docs
+                    dataSource: snapshot._docs,
+                    isLoading: false
                 })
             });
     }
 
     render() {
+        console.log('in render');
         const {navigate} = this.props.navigation;
         return (
-            <View style={styles.discoverContainer}>
-                {/*<Search*/}
-                {/*ref="search_box"*/}
-                {/*backgroundColor='#f88523'*/}
-                {/*/>*/}
-                <FlatList
-                    data={this.state.dataSource}
-                    renderItem={this.renderItem}
-                />
-            </View>
+            this.state.isLoading ?
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <ActivityIndicator size={'large'} color={'black'} animating/>
+                </View>
+                :
+                <View style={styles.discoverContainer}>
+                    {/*<Search*/}
+                    {/*ref="search_box"*/}
+                    {/*backgroundColor='#f88523'*/}
+                    {/*/>*/}
+                    <FlatList
+                        data={this.state.dataSource}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </View>
+
         );
     }
 }
 
 const styles = StyleSheet.create({
     discoverContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        flex: 1
     },
+    categoryImage: {
+        width: 80,
+        height: 80,
+        marginLeft: 15,
+        marginTop: 15,
+        marginBottom: 10
+    }
 });
 
 export const DiscoverStack = createStackNavigator({
