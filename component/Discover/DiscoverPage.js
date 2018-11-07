@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text, Image, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {CheckBox, Icon} from 'react-native-elements';
+import {CheckBox, Icon, SearchBar} from 'react-native-elements';
 import {createStackNavigator} from "react-navigation";
 import Search from 'react-native-search-box';
 import firebase from 'react-native-firebase';
-import PTRView from 'react-native-pull-to-refresh';
+import _ from 'lodash';
 
 export class DiscoverPage extends Component {
     constructor() {
@@ -12,9 +12,33 @@ export class DiscoverPage extends Component {
         this.state = {
             isLoading: true,
             dataSource: [],
+            refreshing: false,
+            fullDataSource: [],
+            query: ''
         }
     }
 
+    componentDidMount() {
+        this.fetchingCourse();
+    }
+
+    fetchingCourse = () => {
+        firebase.firestore().collection('courses').get()
+            .then(snapshot => {
+                this.setState({
+                    dataSource: snapshot._docs,
+                    fullDataSource: snapshot._docs,
+                    isLoading: false,
+                    refreshing: false
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    refreshing: false
+                })
+            });
+    };
 
     renderItem = ({item}) => {
         const listItem = item.data();
@@ -95,21 +119,31 @@ export class DiscoverPage extends Component {
         } else {
             return (<Image style={styles.categoryImage} source={require("../../asset/categories/OTHER.png")}/>)
         }
+    };
+
+    handleRefresh = () => {
+        this.setState({
+            refreshing: true
+        }, () => {
+            this.fetchingCourse();
+        })
     }
 
-    componentDidMount() {
-        console.log("in componentDidMount");
-        firebase.firestore().collection('courses').get()
-            .then(snapshot => {
-                this.setState({
-                    dataSource: snapshot._docs,
-                    isLoading: false
-                })
-            });
+    handleSearch = (text) => {
+        const formattedText = text.toLowerCase();
+        const data = _.filter(this.state.fullDataSource, item => {
+            const listItem = item.data();
+            const title = listItem.title.toLowerCase();
+            const category = listItem.selectedCategory.toLowerCase();
+            return contains({title, category}, formattedText);
+        });
+        this.setState({
+            query: formattedText,
+            dataSource: data
+        })
     }
 
     render() {
-        console.log('in render');
         const {navigate} = this.props.navigation;
         return (
             this.state.isLoading ?
@@ -118,14 +152,19 @@ export class DiscoverPage extends Component {
                 </View>
                 :
                 <View style={styles.discoverContainer}>
-                    {/*<Search*/}
-                    {/*ref="search_box"*/}
-                    {/*backgroundColor='#f88523'*/}
-                    {/*/>*/}
+                    <SearchBar
+                        round
+                        onChangeText={this.handleSearch}
+                        lightTheme={true}
+                        containerStyle={{backgroundColor: 'white', borderWidth: 0}}
+                        inputStyle={{backgroundColor: '#e6e6e6'}}
+                        placeholder='Type Here...'/>
                     <FlatList
                         data={this.state.dataSource}
                         renderItem={this.renderItem}
                         keyExtractor={(item, index) => index.toString()}
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.handleRefresh}
                     />
                 </View>
 
@@ -154,3 +193,10 @@ export const DiscoverStack = createStackNavigator({
         }
     }
 });
+
+export const contains = ({title, category}, query) => {
+    if (title.includes(query) || category.includes(query)) {
+        return true;
+    }
+    return false;
+};
