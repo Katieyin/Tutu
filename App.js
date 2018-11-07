@@ -61,7 +61,7 @@ export const Tabs = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Discover',
+    initialRouteName: 'Post',
     lazyLoad: true,
     animationEnabled: true,
     tabBarOptions: {

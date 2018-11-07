@@ -174,7 +174,8 @@ export class DiscoverPage extends Component {
 
 const styles = StyleSheet.create({
     discoverContainer: {
-        flex: 1
+        flex: 1,
+        height: '100%'
     },
     categoryImage: {
         width: 80,
