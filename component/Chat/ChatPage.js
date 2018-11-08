@@ -20,7 +20,7 @@ export const ChatStack = createStackNavigator({
     Chat: {
         screen: ChatPage,
         navigationOptions: {
-            title: 'Favorites'
+            title: 'Chat'
         }
     }
 });

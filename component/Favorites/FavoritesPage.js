@@ -17,7 +17,7 @@ export class FavoritesPage extends Component {
 }
 
 export const FavoritesStack = createStackNavigator({
-    Discover: {
+    Favorites: {
         screen: FavoritesPage,
         navigationOptions: {
             title: 'Favorites'

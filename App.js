@@ -11,6 +11,7 @@ import {ProfileStack} from "./component/Profile/ProfilePage";
 import {EditProfilePage, EditProfileStack} from "./component/Profile/EditProfilePage";
 import {ChatStack} from "./component/Chat/ChatPage";
 import {FavoritesStack} from "./component/Favorites/FavoritesPage";
+import {DetailStack} from "./component/Detail/DetailPage";
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
@@ -88,6 +89,9 @@ export const Root = createStackNavigator({
     },
     EditProfile: {
         screen: EditProfileStack
+    },
+    Detail: {
+        screen: DetailStack
     }
 }, {
     headerMode: 'none'

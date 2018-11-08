@@ -43,9 +43,13 @@ export class DiscoverPage extends Component {
     renderItem = ({item}) => {
         const listItem = item.data();
         const categoryImage = this.findImage(listItem.selectedCategory);
+        const {navigate} = this.props.navigation;
 
         return (
-            <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}>
+            <TouchableOpacity
+                style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
+                onPress={() => {navigate('Detail')}}
+            >
                 {categoryImage}
                 <View>
                     <View style={{flex: 1, justifyContent: 'center', marginLeft: 10}}>
