@@ -66,7 +66,7 @@ export const Tabs = createBottomTabNavigator({
     lazyLoad: true,
     animationEnabled: true,
     tabBarOptions: {
-        activeTintColor: '#f88523',
+        activeTintColor: '#f1c002',
         inactiveTintColor: 'gray',
         // style: {
         //     backgroundColor: 'rgba(186, 220, 88, 0.5)',

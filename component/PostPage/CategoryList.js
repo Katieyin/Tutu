@@ -57,6 +57,4 @@ export const CATEGORY = [
         label: 'Other',
         value: 'OTHER'
     }
-
-
 ];

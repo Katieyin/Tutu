@@ -65,7 +65,7 @@ export class EditProfilePage extends Component {
             });
             const user = firebase.auth().currentUser;
             const db = firebase.firestore().collection('users').doc(user.uid);
-            db.set({
+            db.update({
                 username: this.state.username,
                 school: this.state.school,
                 linkedIn: this.state.linkedIn,
@@ -137,7 +137,7 @@ export class EditProfilePage extends Component {
                         activeOpacity={0.7}
                     />
                     <TouchableOpacity style={{marginTop: 10}} onPress={this.showActionSheet}>
-                        <Text style={{fontSize: 14, fontWeight: 'bold', color: '#f88523'}}>Change Profile Photo</Text>
+                        <Text style={{fontSize: 14, fontWeight: 'bold', color: '#e6b800'}}>Change Profile Photo</Text>
                     </TouchableOpacity>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}

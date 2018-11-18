@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, AlertIOS, Modal, FlatList, Image, ActivityIndicator} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    AlertIOS,
+    Modal,
+    FlatList,
+    Image,
+    ActivityIndicator
+} from 'react-native';
 import {Icon, Header, CheckBox} from 'react-native-elements';
 import {createStackNavigator} from "react-navigation";
 import {AddNewPostPage} from "./AddNewPostPage";
@@ -66,7 +76,7 @@ export class PostPage extends Component {
                         </Text>
                         <View style={{marginLeft: -20, marginTop: -10}}>
                             <CheckBox title='Online'
-                                      checkedColor={'#f88523'}
+                                      checkedColor={'#e6b800'}
                                       checked={listItem.online}
                                       containerStyle={{backgroundColor: 'transparent', borderWidth: 0}}
                                       iconType='material-community'
@@ -78,7 +88,7 @@ export class PostPage extends Component {
                             />
                             <CheckBox title='Face to face'
                                       checked={listItem.faceToFace}
-                                      checkedColor={'#f88523'}
+                                      checkedColor={'#e6b800'}
                                       size={15}
                                       fontFamily={'system font'}
                                       iconType='material-community'
@@ -188,8 +198,8 @@ export class PostPage extends Component {
                             this.setModalVisible(true);
                         }}>
                             <View style={{flexDirection: "row"}}>
-                                <Text style={{fontSize: 11, marginTop: 1, color: '#808080', fontWeight: 'bold'}}>Add
-                                    Course </Text>
+                                <Text style={{fontSize: 11, marginTop: 1, color: '#808080', fontWeight: 'bold'}}>
+                                    Add Course </Text>
                                 <Icon name="plus" size={15} type='material-community' color='#808080'/>
                             </View>
                         </TouchableOpacity>

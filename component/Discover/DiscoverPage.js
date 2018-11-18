@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, Image, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {CheckBox, Icon, SearchBar} from 'react-native-elements';
+import {CheckBox, SearchBar} from 'react-native-elements';
 import {createStackNavigator} from "react-navigation";
-import Search from 'react-native-search-box';
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
 
@@ -43,12 +42,11 @@ export class DiscoverPage extends Component {
     renderItem = ({item}) => {
         const listItem = item.data();
         const categoryImage = this.findImage(listItem.selectedCategory);
-        const {navigate} = this.props.navigation;
 
         return (
             <TouchableOpacity
                 style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
-                onPress={() => {navigate('Detail')}}
+                onPress={() => {this.props.navigation.navigate('Detail', {course: listItem, categoryImage: categoryImage, courseId: item.id}) }}
             >
                 {categoryImage}
                 <View>
@@ -61,7 +59,7 @@ export class DiscoverPage extends Component {
                         </Text>
                         <View style={{marginLeft: -20, marginTop: -10}}>
                             <CheckBox title='Online'
-                                      checkedColor={'#f88523'}
+                                      checkedColor={'#e6b800'}
                                       checked={listItem.online}
                                       containerStyle={{backgroundColor: 'transparent', borderWidth: 0}}
                                       iconType='material-community'
@@ -73,7 +71,7 @@ export class DiscoverPage extends Component {
                             />
                             <CheckBox title='Face to face'
                                       checked={listItem.faceToFace}
-                                      checkedColor={'#f88523'}
+                                      checkedColor={'#e6b800'}
                                       size={15}
                                       fontFamily={'system font'}
                                       iconType='material-community'
@@ -194,8 +192,13 @@ export const DiscoverStack = createStackNavigator({
     Discover: {
         screen: DiscoverPage,
         navigationOptions: {
-            title: 'Discover'
-        }
+            title: 'Discover',
+            headerStyle: {
+                backgroundColor: '#f1c002',
+                borderBottomWidth: 0,
+            },
+        },
+
     }
 });
 

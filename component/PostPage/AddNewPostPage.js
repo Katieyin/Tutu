@@ -152,7 +152,7 @@ export class AddNewPostPage extends Component {
                     <FormLabel>Location</FormLabel>
                     <View style={{flexDirection: 'row'}}>
                         <CheckBox title='Online'
-                                  checkedColor={'#f88523'}
+                                  checkedColor={'#e6b800'}
                                   checked={this.state.isOnlineChecked}
                                   containerStyle={{backgroundColor: 'white', borderWidth: 0}}
                                   iconType='material-community'
@@ -163,7 +163,7 @@ export class AddNewPostPage extends Component {
                         />
                         <CheckBox title='Face to face'
                                   checked={this.state.isFTFChecked}
-                                  checkedColor={'#f88523'}
+                                  checkedColor={'#e6b800'}
                                   onPress={this.handlePressFTFCheckedBox}
                                   size={20}
                                   iconType='material-community'
@@ -205,7 +205,7 @@ const styles = StyleSheet.create(
             justifyContent: 'center',
             marginBottom: 10,
             width: '100%',
-            backgroundColor: '#f88523',
+            backgroundColor: '#e6b800',
             height: 45,
             borderColor: "transparent",
             borderWidth: 0,
