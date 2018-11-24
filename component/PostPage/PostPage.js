@@ -10,11 +10,12 @@ import {
     Image,
     ActivityIndicator
 } from 'react-native';
-import {Icon, Header, CheckBox} from 'react-native-elements';
+import {Icon, Header, CheckBox, Button} from 'react-native-elements';
 import {createStackNavigator} from "react-navigation";
 import {AddNewPostPage} from "./AddNewPostPage";
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
+import Swipeout from 'react-native-swipeout';
 
 export class PostPage extends Component {
 
@@ -61,56 +62,68 @@ export class PostPage extends Component {
     renderItem = ({item}) => {
         const listItem = item.data();
         const categoryImage = this.findImage(listItem.selectedCategory);
-
+        const swipeoutBtns = [
+            {
+                backgroundColor: '#dbddde',
+                underlayColor: '#dbddde',
+                component: (<Button
+                    title='Delete'
+                    buttonStyle={styles.swipeButton}
+                    textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)', marginLeft: -30}}
+                />)
+            }
+        ];
         return (
-            <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
-                              onPress={() => {
-                                  this.props.navigation.navigate('Detail', {
-                                      course: listItem,
-                                      categoryImage: categoryImage,
-                                      courseId: item.id,
-                                      previousScreen: 'Post'
-                                  })
-                              }}>
-                {categoryImage}
-                <View>
-                    <View style={{flex: 1, justifyContent: 'center', marginLeft: 10}}>
-                        <Text style={{fontSize: 18, marginTop: 10}}>
-                            {listItem.title}
-                        </Text>
-                        <Text style={{marginTop: 5, fontSize: 15, color: '#800000', fontWeight: 'bold'}}>
-                            $ {listItem.price} / hr
-                        </Text>
-                        <View style={{marginLeft: -20, marginTop: -10}}>
-                            <CheckBox title='Online'
-                                      checkedColor={'#e6b800'}
-                                      checked={listItem.online}
-                                      containerStyle={{backgroundColor: 'transparent', borderWidth: 0}}
-                                      iconType='material-community'
-                                      size={15}
-                                      fontFamily={'system font'}
-                                      checkedIcon='check-circle'
-                                      uncheckedIcon='checkbox-blank-circle-outline'
-                                      disabled={true}
-                            />
-                            <CheckBox title='Face to face'
-                                      checked={listItem.faceToFace}
-                                      checkedColor={'#e6b800'}
-                                      size={15}
-                                      fontFamily={'system font'}
-                                      iconType='material-community'
-                                      checkedIcon='check-circle'
-                                      uncheckedIcon='checkbox-blank-circle-outline'
-                                      disabled={true}
-                                      containerStyle={{
-                                          backgroundColor: 'transparent',
-                                          borderWidth: 0,
-                                          marginTop: -20
-                                      }}/>
+            <Swipeout right={swipeoutBtns}>
+                <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
+                                  onPress={() => {
+                                      this.props.navigation.navigate('Detail', {
+                                          course: listItem,
+                                          categoryImage: categoryImage,
+                                          courseId: item.id,
+                                          previousScreen: 'Post'
+                                      })
+                                  }}>
+                    {categoryImage}
+                    <View>
+                        <View style={{flex: 1, justifyContent: 'center', marginLeft: 10}}>
+                            <Text style={{fontSize: 18, marginTop: 10}}>
+                                {listItem.title}
+                            </Text>
+                            <Text style={{marginTop: 5, fontSize: 15, color: '#800000', fontWeight: 'bold'}}>
+                                $ {listItem.price} / hr
+                            </Text>
+                            <View style={{marginLeft: -20, marginTop: -10}}>
+                                <CheckBox title='Online'
+                                          checkedColor={'#e6b800'}
+                                          checked={listItem.online}
+                                          containerStyle={{backgroundColor: 'transparent', borderWidth: 0}}
+                                          iconType='material-community'
+                                          size={15}
+                                          fontFamily={'system font'}
+                                          checkedIcon='check-circle'
+                                          uncheckedIcon='checkbox-blank-circle-outline'
+                                          disabled={true}
+                                />
+                                <CheckBox title='Face to face'
+                                          checked={listItem.faceToFace}
+                                          checkedColor={'#e6b800'}
+                                          size={15}
+                                          fontFamily={'system font'}
+                                          iconType='material-community'
+                                          checkedIcon='check-circle'
+                                          uncheckedIcon='checkbox-blank-circle-outline'
+                                          disabled={true}
+                                          containerStyle={{
+                                              backgroundColor: 'transparent',
+                                              borderWidth: 0,
+                                              marginTop: -20
+                                          }}/>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </TouchableOpacity>)
+                </TouchableOpacity>
+            </Swipeout>)
     };
 
     findImage = (category) => {
@@ -285,7 +298,13 @@ const styles = StyleSheet.create(
             marginLeft: 15,
             marginTop: 15,
             marginBottom: 10
-        }
+        },
+        swipeButton: {
+            backgroundColor: '#e6b800',
+            height: 114,
+            width: 100,
+            marginLeft: -8
+        },
     });
 
 export const PostStack = createStackNavigator({

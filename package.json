@@ -23,6 +23,7 @@
     "react-native-pull-to-refresh": "^2.1.3",
     "react-native-read-more-text": "^1.1.0",
     "react-native-search-box": "0.0.19",
+    "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^5.0.0",
     "react-native-view-more-text": "^2.0.1",
     "react-navigation": "^2.13.0"
