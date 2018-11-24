@@ -209,11 +209,26 @@ export class PostPage extends Component {
                             animationType="slide"
                             transparent={false}
                             visible={this.state.modalVisible}>
-                            <Header backgroundColor={'white'}
-                                    leftComponent={<Icon name="close" size={20} type='material-community'
-                                                         color='#88959F'
-                                                         onPress={this.handelCloseButtonPress}/>}
-                                    centerComponent={{text: 'Add New Course',}}
+                            <Header backgroundColor={'#f1c002'}
+                                    leftComponent={{
+                                        icon: 'close',
+                                        color:'black',
+                                        containerStyle: {
+                                            marginLeft: -5,
+                                            marginBottom: -10,
+                                        },
+                                        onPress: this.handelCloseButtonPress,
+                                    }}
+
+                                    centerComponent={{
+                                        text: 'Add New Course',
+                                        style: {
+                                            fontSize: 17,
+                                            marginHorizontal: 16,
+                                            marginBottom: -10,
+                                            fontWeight: '600',
+                                        }
+                                    }}
                             />
                             <AddNewPostPage closeModal={this.closeModal}/>
                         </Modal>
@@ -270,7 +285,11 @@ export const PostStack = createStackNavigator({
     Post: {
         screen: PostPage,
         navigationOptions: {
-            title: 'My post',
+            title: 'Add New Course',
+            headerStyle: {
+                backgroundColor: '#f1c002',
+                borderBottomWidth: 0,
+            },
         }
     }
 });

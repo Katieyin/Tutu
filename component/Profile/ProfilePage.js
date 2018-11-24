@@ -10,6 +10,10 @@ export class ProfilePage extends Component {
         const {params = {}} = navigation.state;
         return {
             title: 'Profile',
+            headerStyle: {
+                backgroundColor: '#f1c002',
+                borderBottomWidth: 0,
+            },
             headerRight: (
                 <View style={{marginRight: 10}}>
                     <Icon name="square-edit-outline" size={25} type='material-community' color='#88959F'

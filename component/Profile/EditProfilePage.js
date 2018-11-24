@@ -28,6 +28,10 @@ export class EditProfilePage extends Component {
                     </TouchableOpacity>
                 </View>
             ),
+            headerStyle: {
+                backgroundColor: '#f1c002',
+                borderBottomWidth: 0,
+            },
         }
     };
 

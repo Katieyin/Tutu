@@ -20,7 +20,11 @@ export const FavoritesStack = createStackNavigator({
     Favorites: {
         screen: FavoritesPage,
         navigationOptions: {
-            title: 'Favorites'
+            title: 'Favorites',
+            headerStyle: {
+                backgroundColor: '#f1c002',
+                borderBottomWidth: 0,
+            },
         }
     }
 });

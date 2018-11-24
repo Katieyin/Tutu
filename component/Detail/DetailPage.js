@@ -70,7 +70,7 @@ export class DetailPage extends Component {
                 email: userProfile.email,
             });
 
-            const isFavour = _.some(this.state.favourList, (course)=>{
+            const isFavour = _.some(this.state.favourList, (course) => {
                 return course === this.state.courseId;
             });
             this.setState({
@@ -82,7 +82,6 @@ export class DetailPage extends Component {
                 console.log('avatar loaded');
                 this.setState({avatar: result})
             }).catch((error) => {
-                console.log(error);
                 const userDefaultAvatarRef = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/user_avatar.png');
                 userDefaultAvatarRef.getDownloadURL().then((result) => {
                     this.setState({avatar: result})
@@ -128,34 +127,39 @@ export class DetailPage extends Component {
         }, () => {
             const user = firebase.auth().currentUser;
             const db = firebase.firestore().collection('users').doc(user.uid);
-            if (this.state.isFavour){
-                const favourList = this.state.favourList;
-                const newFavourList = favourList.append(this.state.courseId);
-                console.log(newFavourList);
+            if (this.state.isFavour) {
+                this.setState({favourList: this.state.favourList.concat(this.state.courseId)}, () => {
+                    db.update({
+                        favourList: this.state.favourList,
+                    }).then((user) => {
+                        console.log('success');
+                        console.log(user);
+                    }).catch((error) => {
+                        console.log(error)
+                    });
+                });
+            } else {
+                this.setState({
+                    favourList: _.filter(this.state.favourList, (favour) => {
+                        return favour !== this.state.courseId;
+                    })
+                }, () => {
+                    db.update({
+                        favourList: this.state.favourList,
+                    }).then((user) => {
+                        console.log('success');
+                        console.log(user);
+                    }).catch((error) => {
+                        console.log(error)
+                    });
+                });
             }
-            // db.update({
-            //     favourList: this.state.courseId,
-            // }).then(() => {
-            //     console.log('success');
-            // }).catch((error) => {
-            //     console.log(error)
-            // });
+
+
         });
 
     }
 
-    addToFavour() {
-        console.log('in add to favour');
-        const user = firebase.auth().currentUser;
-        const db = firebase.firestore().collection('users').doc(user.uid);
-        db.update({
-            favourList: this.state.courseId,
-        }).then(() => {
-            console.log('success');
-        }).catch((error) => {
-            console.log(error)
-        });
-    }
 
     render() {
         const category = this.findCategory(this.state.selectedCategory);
@@ -315,7 +319,7 @@ export class DetailPage extends Component {
                                 </Text>
                             </View>
                             <View>
-                                <CheckBox title='Add to Favour'
+                                <CheckBox title='Add to Favourite'
                                           checkedColor={'#e6b800'}
                                           checked={this.state.isFavour}
                                           containerStyle={{backgroundColor: 'white', borderWidth: 0}}

@@ -23,7 +23,11 @@ export class AddNewPostPage extends Component {
     };
 
     static navigationOptions = {
-        title: 'Add New Course'
+        title: 'Add New Course',
+        headerStyle: {
+            backgroundColor: '#f1c002',
+            borderBottomWidth: 0,
+        },
 
     };
 

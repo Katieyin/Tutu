@@ -20,7 +20,11 @@ export const ChatStack = createStackNavigator({
     Chat: {
         screen: ChatPage,
         navigationOptions: {
-            title: 'Chat'
+            title: 'Chat',
+            headerStyle: {
+                backgroundColor: '#f1c002',
+                borderBottomWidth: 0,
+            },
         }
     }
 });
