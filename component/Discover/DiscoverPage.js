@@ -46,7 +46,14 @@ export class DiscoverPage extends Component {
         return (
             <TouchableOpacity
                 style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
-                onPress={() => {this.props.navigation.navigate('Detail', {course: listItem, categoryImage: categoryImage, courseId: item.id}) }}
+                onPress={() => {
+                    this.props.navigation.navigate('Detail', {
+                        course: listItem,
+                        categoryImage: categoryImage,
+                        courseId: item.id,
+                        previousScreen: 'Discover'
+                    })
+                }}
             >
                 {categoryImage}
                 <View>

@@ -34,7 +34,9 @@ export class DetailPage extends Component {
         const course = this.props.navigation.state.params.course;
         const categoryImage = this.props.navigation.state.params.categoryImage;
         const courseId = this.props.navigation.state.params.courseId;
+        const previousScreen = this.props.navigation.state.params.previousScreen;
         this.setState({
+            previousScreen: previousScreen,
             courseId: courseId,
             title: course.title,
             selectedCategory: course.selectedCategory,
@@ -99,7 +101,7 @@ export class DetailPage extends Component {
     }
 
     goBack = () => {
-        this.props.navigation.navigate('Discover');
+        this.props.navigation.navigate(this.state.previousScreen);
     }
 
     findCategory = (shortCut) => {

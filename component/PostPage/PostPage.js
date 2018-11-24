@@ -15,7 +15,6 @@ import {createStackNavigator} from "react-navigation";
 import {AddNewPostPage} from "./AddNewPostPage";
 import firebase from 'react-native-firebase';
 import _ from 'lodash';
-import {contains} from "../Discover/DiscoverPage";
 
 export class PostPage extends Component {
 
@@ -64,7 +63,15 @@ export class PostPage extends Component {
         const categoryImage = this.findImage(listItem.selectedCategory);
 
         return (
-            <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}>
+            <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
+                              onPress={() => {
+                                  this.props.navigation.navigate('Detail', {
+                                      course: listItem,
+                                      categoryImage: categoryImage,
+                                      courseId: item.id,
+                                      previousScreen: 'Post'
+                                  })
+                              }}>
                 {categoryImage}
                 <View>
                     <View style={{flex: 1, justifyContent: 'center', marginLeft: 10}}>
@@ -212,7 +219,7 @@ export class PostPage extends Component {
                             <Header backgroundColor={'#f1c002'}
                                     leftComponent={{
                                         icon: 'close',
-                                        color:'black',
+                                        color: 'black',
                                         containerStyle: {
                                             marginLeft: -5,
                                             marginBottom: -10,
