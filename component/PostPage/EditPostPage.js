@@ -20,8 +20,10 @@ export class EditPostPage extends Component {
     constructor(props) {
         super(props);
         const course = this.props.courseDetail;
+        const courseId = this.props.courseId;
         console.log(course);
         this.state = {
+            courseId: courseId,
             title: course.title,
             selectedCategory: course.selectedCategory,
             isOnlineChecked: course.online,
@@ -70,8 +72,8 @@ export class EditPostPage extends Component {
         } else {
             const currentUser = firebase.auth().currentUser;
             const {uid} = currentUser;
-            const db = firebase.firestore().collection('courses');
-            db.add({
+            const db = firebase.firestore().collection('courses').doc(this.state.courseId);
+            db.update({
                 userId: uid,
                 selectedCategory: this.state.selectedCategory,
                 price: this.state.price,

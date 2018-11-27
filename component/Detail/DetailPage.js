@@ -4,7 +4,7 @@ import {createStackNavigator} from "react-navigation";
 import {Icon} from 'react-native-elements';
 import {CATEGORY} from "../PostPage/CategoryList";
 import firebase from 'react-native-firebase';
-import {List, ListItem, Avatar, CheckBox, Header} from 'react-native-elements';
+import {Avatar, CheckBox, Header} from 'react-native-elements';
 import _ from 'lodash';
 import ViewMoreText from 'react-native-view-more-text';
 import {EditPostPage} from "../PostPage/EditPostPage";
@@ -95,8 +95,34 @@ export class DetailPage extends Component {
 
     _onRefresh = () => {
         this.setState({refreshing: true});
-
+        this.refreshingCourse();
     }
+
+    refreshingCourse = () => {
+        firebase.firestore().collection('courses').doc(this.state.courseId).get()
+            .then(snapshot => {
+                const course = snapshot._data;
+
+                this.setState({
+                    title: course.title,
+                    selectedCategory: course.selectedCategory,
+                    online: course.online,
+                    faceToFace: course.faceToFace,
+                    price: course.price,
+                    description: course.description,
+                    location: course.location,
+                    isLoading: false,
+                    refreshing: false
+                })
+            })
+            .catch(error => {
+                console.log(error);
+                this.setState({
+                    refreshing: false
+                })
+            });
+    };
+
 
     findUser = (userId) => {
         firebase.firestore().collection('users').doc(userId).get().then((user) => {
@@ -427,7 +453,8 @@ export class DetailPage extends Component {
                                     }
                                 }}
                         />
-                        <EditPostPage closeModal={this.closeModal} courseDetail={this.state}/>
+                        <EditPostPage closeModal={this.closeModal} courseDetail={this.state}
+                                      courseId={this.state.courseId}/>
                     </Modal>
                 </View>
             </View>
