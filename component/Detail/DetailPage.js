@@ -12,6 +12,11 @@ import {EditPostPage} from "../PostPage/EditPostPage";
 export class DetailPage extends Component {
     static navigationOptions = ({navigation}) => {
         const {params = {}} = navigation.state;
+        const canEditCourse = params.previousScreen === 'Post';
+        const headerRight = canEditCourse ? (<View style={{marginRight: 10}}>
+            <Icon name="square-edit-outline" size={28} type='material-community' color='black'
+                  onPress={() => params.handleEditCourse()}/>
+        </View>) : null;
         return {
             title: 'Detail',
             headerStyle: {
@@ -22,12 +27,7 @@ export class DetailPage extends Component {
             headerTitleStyle: {
                 // fontSize: 23
             },
-            headerRight: (
-                <View style={{marginRight: 10}}>
-                    <Icon name="square-edit-outline" size={28} type='material-community' color='black'
-                          onPress={() => params.handleEditCourse()}/>
-                </View>
-            ),
+            headerRight: headerRight,
             headerLeft:
                 (<View style={{marginRight: 10}}>
                     <Icon name="chevron-left" size={35} type='material-community' color='black'
@@ -126,8 +126,8 @@ export class DetailPage extends Component {
 
     findUser = (userId) => {
         firebase.firestore().collection('users').doc(userId).get().then((user) => {
-            console.log('in get user success');
-            console.log(user);
+            // console.log('in get user success');
+            // console.log(user);
 
             const userProfile = user.data();
             this.setState({
@@ -144,7 +144,7 @@ export class DetailPage extends Component {
             this.setState({
                 isFavour: isFavour
             })
-            console.log(this.state);
+            // console.log(this.state);
             const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + this.state.userId);
             storage.getDownloadURL().then((result) => {
                 console.log('avatar loaded');
@@ -194,8 +194,8 @@ export class DetailPage extends Component {
                     db.update({
                         favourList: this.state.favourList,
                     }).then((user) => {
-                        console.log('success');
-                        console.log(user);
+                        // console.log('success');
+                        // console.log(user);
                     }).catch((error) => {
                         console.log(error)
                     });
@@ -209,8 +209,8 @@ export class DetailPage extends Component {
                     db.update({
                         favourList: this.state.favourList,
                     }).then((user) => {
-                        console.log('success');
-                        console.log(user);
+                        // console.log('success');
+                        // console.log(user);
                     }).catch((error) => {
                         console.log(error)
                     });
