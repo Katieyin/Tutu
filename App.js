@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import {createStackNavigator, createBottomTabNavigator, createTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
 import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
@@ -13,7 +13,7 @@ import {FavoritesStack} from "./component/Favorites/FavoritesPage";
 import {DetailStack} from "./component/Detail/DetailPage";
 import {EditPostStack} from "./component/PostPage/EditPostPage";
 
-export const Tabs = createBottomTabNavigator({
+export const Tabs = createTabNavigator({
     Discover: {
         screen: DiscoverStack,
         navigationOptions: {
@@ -65,6 +65,7 @@ export const Tabs = createBottomTabNavigator({
     initialRouteName: 'Post',
     lazyLoad: true,
     animationEnabled: true,
+    swipeEnabled: true,
     tabBarOptions: {
         activeTintColor: '#f1c002',
         inactiveTintColor: 'gray',

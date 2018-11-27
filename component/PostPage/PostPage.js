@@ -59,6 +59,38 @@ export class PostPage extends Component {
             });
     };
 
+    handleDelete = (id) => {
+        AlertIOS.alert(
+            'Are you sure you want to delete this course?',
+            'The deletion may not be recovered',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Confirm',
+                    onPress: () => {
+                        console.log(id);
+                        firebase.firestore().collection('courses').doc(id).delete()
+                            .then(snapshot => {
+                                console.log(snapshot);
+                                this.fetchingCourse();
+                            })
+                            .catch(error => {
+                                console.log(error);
+                                this.setState({
+                                    refreshing: false
+                                })
+                            });
+                    },
+                },
+            ]
+        );
+
+    }
+
     renderItem = ({item}) => {
         const listItem = item.data();
         const categoryImage = this.findImage(listItem.selectedCategory);
@@ -66,15 +98,27 @@ export class PostPage extends Component {
             {
                 backgroundColor: '#dbddde',
                 underlayColor: '#dbddde',
-                component: (<Button
-                    title='Delete'
-                    buttonStyle={styles.swipeButton}
-                    textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)', marginLeft: -30}}
-                />)
+                component: (
+                    <Button
+                        title='Delete'
+                        buttonStyle={styles.swipeButton}
+                        textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)', marginLeft: -30}}
+                        onPress={this.handleDelete.bind(this, item.id)}
+                    />
+                ),
             }
         ];
+
+        // const swipeSettind = {
+        //     right: [{
+        //         onPress: () => {
+        //             console.log(listItem.uid);
+        //         },
+        //         text: 'delete', type: 'delete'
+        //     }]
+        // }
         return (
-            <Swipeout right={swipeoutBtns}>
+            <Swipeout right={swipeoutBtns} autoClose={true} close={true}>
                 <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
                                   onPress={() => {
                                       this.props.navigation.navigate('Detail', {
