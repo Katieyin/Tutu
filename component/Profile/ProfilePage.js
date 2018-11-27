@@ -16,7 +16,7 @@ export class ProfilePage extends Component {
             },
             headerRight: (
                 <View style={{marginRight: 10}}>
-                    <Icon name="square-edit-outline" size={25} type='material-community' color='#88959F'
+                    <Icon name="square-edit-outline" size={28} type='material-community' color='black'
                           onPress={() => params.handleEditProfile()}/>
                 </View>
             ),

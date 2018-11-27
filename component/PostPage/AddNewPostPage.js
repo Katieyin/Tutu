@@ -179,7 +179,16 @@ export class AddNewPostPage extends Component {
                 </View>
                 {requiredCheckboxError && !this.state.isOnlineChecked && !this.state.isFTFChecked ?
                     <FormValidationMessage>{requiredCheckboxError}</FormValidationMessage> : null}
-                <Location/>
+                <FormInput placeholder='Please enter your location here'
+                           inputStyle={{fontSize: 14}}
+                           autoCapitalize='sentences'
+                           autoCorrect={true}
+                           returnKeyType={'done'}
+                           value={this.state.location}
+                           onSubmitEditing={() => {
+                               Keyboard.dismiss()
+                           }}
+                           onChangeText={location => this.setState({location, requiredError: ''})}/>
 
                 <View style={styles.bottomView}>
                     <Button
