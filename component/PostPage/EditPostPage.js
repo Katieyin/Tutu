@@ -6,28 +6,34 @@ import {Dropdown} from 'react-native-material-dropdown';
 import {CATEGORY} from "./CategoryList";
 import firebase from 'react-native-firebase';
 
-export class AddNewPostPage extends Component {
-    state = {
-        title: '',
-        selectedCategory: '',
-        isOnlineChecked: false,
-        isFTFChecked: false,
-        price: null,
-        img: null,
-        description: '',
-        location: '',
-        requiredError: '',
-        requiredCheckboxError: ''
-    };
+export class EditPostPage extends Component {
 
     static navigationOptions = {
-        title: 'Add New Course',
+        title: 'Edit Course',
         headerStyle: {
             backgroundColor: '#f1c002',
             borderBottomWidth: 0,
         },
 
     };
+
+    constructor(props) {
+        super(props);
+        const course = this.props.courseDetail;
+        console.log(course);
+        this.state = {
+            title: course.title,
+            selectedCategory: course.selectedCategory,
+            isOnlineChecked: course.online,
+            isFTFChecked: course.faceToFace,
+            price: course.price,
+            description: course.description,
+            location: course.location,
+            requiredError: '',
+            requiredCheckboxError: ''
+        };
+
+    }
 
     handlePressOnlineCheckedBox = () => {
         this.setState({
@@ -90,7 +96,7 @@ export class AddNewPostPage extends Component {
         return (
             <View style={{flex: 1}}>
                 <FormLabel>Title</FormLabel>
-                <FormInput placeholder='Please enter your title here'
+                <FormInput placeholder={this.state.title}
                            inputStyle={{fontSize: 14}}
                            autoCapitalize='sentences'
                            autoCorrect={true}
@@ -112,7 +118,7 @@ export class AddNewPostPage extends Component {
                                 dropdownPosition={-5}
                                 labelHeight={0}
                                 dropdownOffset={{top: 5, left: 0}}
-                                value={'None'}
+                                value={this.state.selectedCategory}
                                 onChangeText={(selectedCategory) => this.setState({selectedCategory})}
                             />
                         </View>
@@ -122,11 +128,25 @@ export class AddNewPostPage extends Component {
                     <View style={{flexDirection: 'column', width: "50%"}}>
                         <FormLabel>Price ($/hr)</FormLabel>
                         <View style={{flexDirection: 'row'}}>
-                            <FormInput placeholder='Please enter the price'
-                                       keyboardType="numeric"
+                            {/*<FormInput placeholder={this.state.price}*/}
+                                       {/*keyboardType="numeric"*/}
+                                       {/*inputStyle={{fontSize: 14}}*/}
+                                       {/*onChangeText={price => this.setState({price, requiredError: ''})}*/}
+                                       {/*containerStyle={{width: "80%"}}*/}
+                                       {/*onSubmitEditing={() => {*/}
+                                           {/*Keyboard.dismiss()*/}
+                                       {/*}}*/}
+                            {/*/>*/}
+                            <FormInput placeholder={this.state.price}
                                        inputStyle={{fontSize: 14}}
-                                       onChangeText={price => this.setState({price, requiredError: ''})}
-                                       containerStyle={{width: "80%"}}/>
+                                       autoCapitalize='sentences'
+                                       autoCorrect={true}
+                                       returnKeyType={'done'}
+                                       value={this.state.price}
+                                       onSubmitEditing={() => {
+                                           Keyboard.dismiss()
+                                       }}
+                                       onChangeText={price => this.setState({price, requiredError: ''})}/>
                         </View>
                         {requiredError && !this.state.price ?
                             <FormValidationMessage>{requiredError}</FormValidationMessage> : null}
@@ -136,6 +156,7 @@ export class AddNewPostPage extends Component {
                 <FormLabel>Description</FormLabel>
                 <View style={{marginLeft: 20, marginRight: 20, height: 150, marginTop: 5}}>
                     <TextInput
+                        defaultValue={this.state.description}
                         editable={true}
                         style={{height: '100%', borderColor: '#bdc6cf', borderWidth: 1, color: 'black'}}
                         multiline={true}
@@ -176,7 +197,7 @@ export class AddNewPostPage extends Component {
                 </View>
                 {requiredCheckboxError && !this.state.isOnlineChecked && !this.state.isFTFChecked ?
                     <FormValidationMessage>{requiredCheckboxError}</FormValidationMessage> : null}
-                <FormInput placeholder='Please enter your location here'
+                <FormInput placeholder={this.state.location}
                            inputStyle={{fontSize: 14}}
                            autoCapitalize='sentences'
                            autoCorrect={true}
@@ -223,8 +244,8 @@ const styles = StyleSheet.create(
         }
     });
 
-export const AddNewPostStack = createStackNavigator({
-    AddNewPostStack: {
-        screen: AddNewPostPage,
+export const EditPostStack = createStackNavigator({
+    EditPostStack: {
+        screen: EditPostPage,
     }
 });

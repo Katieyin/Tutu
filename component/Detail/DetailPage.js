@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, Modal, ScrollView, TouchableOpacity, AlertIOS, RefreshControl} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import {Icon} from 'react-native-elements';
 import {CATEGORY} from "../PostPage/CategoryList";
 import firebase from 'react-native-firebase';
-import {List, ListItem, Avatar, CheckBox} from 'react-native-elements';
+import {List, ListItem, Avatar, CheckBox, Header} from 'react-native-elements';
 import _ from 'lodash';
 import ViewMoreText from 'react-native-view-more-text';
+import {EditPostPage} from "../PostPage/EditPostPage";
 
 export class DetailPage extends Component {
     static navigationOptions = ({navigation}) => {
@@ -21,6 +22,12 @@ export class DetailPage extends Component {
             headerTitleStyle: {
                 // fontSize: 23
             },
+            headerRight: (
+                <View style={{marginRight: 10}}>
+                    <Icon name="square-edit-outline" size={28} type='material-community' color='black'
+                          onPress={() => params.handleEditCourse()}/>
+                </View>
+            ),
             headerLeft:
                 (<View style={{marginRight: 10}}>
                     <Icon name="chevron-left" size={35} type='material-community' color='black'
@@ -29,6 +36,14 @@ export class DetailPage extends Component {
 
         }
     }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            refreshing: false,
+        };
+    }
+
 
     componentWillMount() {
         const course = this.props.navigation.state.params.course;
@@ -46,7 +61,8 @@ export class DetailPage extends Component {
             description: course.description,
             location: course.location,
             userId: course.userId,
-            categoryImage: categoryImage
+            categoryImage: categoryImage,
+            modalVisible: false,
         });
         const user = firebase.auth().currentUser;
         firebase.firestore().collection('users').doc(user.uid).get().then((user) => {
@@ -56,6 +72,30 @@ export class DetailPage extends Component {
             });
         });
         this.findUser(course.userId);
+    }
+
+    componentDidMount() {
+        this.props.navigation.setParams({
+            goBack: this.goBack,
+            handleEditCourse: this.handleEditCourse
+        })
+    }
+
+    handleEditCourse = () => {
+        this.setModalVisible(!this.state.modalVisible);
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
+    closeModal = () => {
+        this.setModalVisible(!this.state.modalVisible);
+    };
+
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+
     }
 
     findUser = (userId) => {
@@ -93,12 +133,6 @@ export class DetailPage extends Component {
 
 
     };
-
-    componentDidMount() {
-        this.props.navigation.setParams({
-            goBack: this.goBack
-        })
-    }
 
     goBack = () => {
         this.props.navigation.navigate(this.state.previousScreen);
@@ -162,13 +196,37 @@ export class DetailPage extends Component {
 
     }
 
+    handelCloseButtonPress = () => {
+        AlertIOS.alert(
+            'Are you sure you want to leave this page?',
+            'The detail may not be saved',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {
+                    text: 'Confirm',
+                    onPress: () => this.setModalVisible(!this.state.modalVisible),
+                },
+            ]
+        );
+    };
+
 
     render() {
         const category = this.findCategory(this.state.selectedCategory);
 
         return (
             <View style={styles.detailContainer}>
-                <ScrollView behavior={'padding'}>
+                <ScrollView behavior={'padding'}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this._onRefresh}
+                                />
+                            }>
                     <View style={{marginLeft: 15, marginTop: 20,}}>
                         <Text style={{fontSize: 14, fontWeight: 'bold'}}>
                             {category}
@@ -342,6 +400,35 @@ export class DetailPage extends Component {
                         </View>
 
                     </TouchableOpacity>
+                </View>
+                <View>
+                    <Modal
+                        animationType="slide"
+                        transparent={false}
+                        visible={this.state.modalVisible}>
+                        <Header backgroundColor={'#f1c002'}
+                                leftComponent={{
+                                    icon: 'close',
+                                    color: 'black',
+                                    containerStyle: {
+                                        marginLeft: -5,
+                                        marginBottom: -10,
+                                    },
+                                    onPress: this.handelCloseButtonPress,
+                                }}
+
+                                centerComponent={{
+                                    text: 'Edit Course',
+                                    style: {
+                                        fontSize: 17,
+                                        marginHorizontal: 16,
+                                        marginBottom: -10,
+                                        fontWeight: '600',
+                                    }
+                                }}
+                        />
+                        <EditPostPage closeModal={this.closeModal} courseDetail={this.state}/>
+                    </Modal>
                 </View>
             </View>
 

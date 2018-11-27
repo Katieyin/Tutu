@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {LoginPage} from "./component/LoginPage";
-import {HomePage, HomeStack} from "./component/HomePage";
 import {SignUpPage} from "./component/SignUpPage";
 import {Icon} from 'react-native-elements'
 import {PostStack} from "./component/PostPage/PostPage";
 import {AddNewPostStack} from "./component/PostPage/AddNewPostPage";
 import {DiscoverStack} from "./component/Discover/DiscoverPage";
 import {ProfileStack} from "./component/Profile/ProfilePage";
-import {EditProfilePage, EditProfileStack} from "./component/Profile/EditProfilePage";
+import {EditProfileStack} from "./component/Profile/EditProfilePage";
 import {ChatStack} from "./component/Chat/ChatPage";
 import {FavoritesStack} from "./component/Favorites/FavoritesPage";
 import {DetailStack} from "./component/Detail/DetailPage";
+import {EditPostStack} from "./component/PostPage/EditPostPage";
 
 export const Tabs = createBottomTabNavigator({
     Discover: {
@@ -75,7 +75,7 @@ export const Tabs = createBottomTabNavigator({
 });
 
 export const Root = createStackNavigator({
-    Login:{
+    Login: {
         screen: LoginPage
     },
     SignUp: {
@@ -86,6 +86,9 @@ export const Root = createStackNavigator({
     },
     AddNewPost: {
         screen: AddNewPostStack,
+    },
+    EditPost: {
+        screen: EditPostStack,
     },
     EditProfile: {
         screen: EditProfileStack
