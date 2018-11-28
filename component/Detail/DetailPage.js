@@ -4,7 +4,7 @@ import {createStackNavigator} from "react-navigation";
 import {Icon} from 'react-native-elements';
 import {CATEGORY} from "../PostPage/CategoryList";
 import firebase from 'react-native-firebase';
-import {Avatar, CheckBox, Header} from 'react-native-elements';
+import {Avatar, CheckBox, Header, Button} from 'react-native-elements';
 import _ from 'lodash';
 import ViewMoreText from 'react-native-view-more-text';
 import {EditPostPage} from "../PostPage/EditPostPage";
@@ -126,9 +126,6 @@ export class DetailPage extends Component {
 
     findUser = (userId) => {
         firebase.firestore().collection('users').doc(userId).get().then((user) => {
-            // console.log('in get user success');
-            // console.log(user);
-
             const userProfile = user.data();
             this.setState({
                 username: userProfile.username,
@@ -144,7 +141,6 @@ export class DetailPage extends Component {
             this.setState({
                 isFavour: isFavour
             })
-            // console.log(this.state);
             const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + this.state.userId);
             storage.getDownloadURL().then((result) => {
                 console.log('avatar loaded');
@@ -194,7 +190,7 @@ export class DetailPage extends Component {
                     db.update({
                         favourList: this.state.favourList,
                     }).then((user) => {
-                        // console.log('success');
+                        console.log('added to favourite');
                         // console.log(user);
                     }).catch((error) => {
                         console.log(error)
@@ -209,7 +205,7 @@ export class DetailPage extends Component {
                     db.update({
                         favourList: this.state.favourList,
                     }).then((user) => {
-                        // console.log('success');
+                        console.log('removed from favourite');
                         // console.log(user);
                     }).catch((error) => {
                         console.log(error)
@@ -253,10 +249,25 @@ export class DetailPage extends Component {
                                     onRefresh={this._onRefresh}
                                 />
                             }>
-                    <View style={{marginLeft: 15, marginTop: 20,}}>
-                        <Text style={{fontSize: 14, fontWeight: 'bold'}}>
-                            {category}
-                        </Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={{marginLeft: 15, marginTop: 20, width: '81%'}}>
+                            <Text style={{fontSize: 14, fontWeight: 'bold'}}>
+                                {category}
+                            </Text>
+                        </View>
+                        <View>
+                            <CheckBox title=''
+                                      checkedColor={'#e6b800'}
+                                      checked={this.state.isFavour}
+                                      containerStyle={{backgroundColor: 'white', borderWidth: 0}}
+                                      iconType='material-community'
+                                      size={25}
+                                      checkedIcon='heart'
+                                      uncheckedIcon='heart-outline'
+                                      onPress={this.handlePressFavour}
+
+                            />
+                        </View>
                     </View>
 
                     <View style={{width: '70%', marginLeft: 15,}}>
@@ -397,31 +408,20 @@ export class DetailPage extends Component {
                     </View>
                 </ScrollView>
                 <View style={styles.bottomView}>
-                    <TouchableOpacity style={styles.addButton} disabled={true}>
-                        <View style={{flexDirection: 'row', marginLeft: 15, marginTop: 5}}>
-                            <View style={{width: '30%'}}>
-                                <Text style={{fontSize: 20, fontWeight: 'bold', color: '#43484d'}}>
-                                    $ {this.state.price} /hour
+                    <TouchableOpacity style={styles.bottomBar} disabled={true}>
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={{width: '40%', justifyContent: 'center', marginLeft: 20}}>
+                                <Text style={{fontSize: 17, fontWeight: 'bold', color: '#43484d'}}>
+                                    $ {this.state.price} / hour
                                 </Text>
                             </View>
-                            <View>
-                                <CheckBox title='Add to Favourite'
-                                          checkedColor={'#e6b800'}
-                                          checked={this.state.isFavour}
-                                          containerStyle={{backgroundColor: 'white', borderWidth: 0}}
-                                          iconType='material-community'
-                                          size={20}
-                                          checkedIcon='heart'
-                                          uncheckedIcon='heart-outline'
-                                          onPress={this.handlePressFavour}
+                            <View style={styles.addButton} style={{justifyContent: 'center', alignItems: 'center'}}>
+                                <Button
+                                    buttonStyle={styles.chatButton}
+                                    icon={{name: 'comment-text-multiple-outline', type: 'material-community', size: 22}}
+                                    textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}
+                                    title={'Chat'}
                                 />
-                            </View>
-                            <View>
-                                <Icon name="comment-text-multiple-outline" size={22} color={'#e6b800'}
-                                      type='material-community'
-                                      onPress={() => {
-                                          console.log('chat')
-                                      }}/>
                             </View>
                         </View>
 
@@ -490,19 +490,23 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
     },
-    addButton: {
-        // borderRadius: 25,
+    bottomBar: {
         shadowColor: 'grey',
         shadowOffset: {width: 0, height: -10},
         shadowOpacity: 0.5,
-        // shadowRadius: 2,
         backgroundColor: 'white',
         height: '100%',
-        // width: '27%',
         alignItems: 'center',
         justifyContent: 'center',
-        // marginBottom: 10,
     },
+    chatButton: {
+        backgroundColor: '#e6b800',
+        paddingHorizontal: 10,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        width: 150,
+    }
 });
 
 export const DetailStack = createStackNavigator({

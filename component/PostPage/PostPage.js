@@ -109,14 +109,6 @@ export class PostPage extends Component {
             }
         ];
 
-        // const swipeSettind = {
-        //     right: [{
-        //         onPress: () => {
-        //             console.log(listItem.uid);
-        //         },
-        //         text: 'delete', type: 'delete'
-        //     }]
-        // }
         return (
             <Swipeout right={swipeoutBtns} autoClose={true} close={true}>
                 <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}

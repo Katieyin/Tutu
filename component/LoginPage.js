@@ -94,13 +94,6 @@ export class LoginPage extends Component {
                             onPress={this.handleLogin}
                         />
                     </View>
-
-                    <View style={styles.forgetPasswordContainer}>
-                        <TouchableOpacity onPress={this.handleLogin}>
-                            <Text style={styles.forgetPasswordText}
-                            >Forget password?</Text>
-                        </TouchableOpacity>
-                    </View>
                 </View>
             </KeyboardAvoidingView>
         );

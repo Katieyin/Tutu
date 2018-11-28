@@ -24,15 +24,15 @@ export const Tabs = createTabNavigator({
             )
         }
     },
-    Chat: {
-        screen: ChatStack,
-        navigationOptions: {
-            tabBarLabel: 'Chat',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="comment-text-multiple-outline" size={22} color={tintColor} type='material-community'/>
-            )
-        }
-    },
+    // Chat: {
+    //     screen: ChatStack,
+    //     navigationOptions: {
+    //         tabBarLabel: 'Chat',
+    //         tabBarIcon: ({tintColor}) => (
+    //             <Icon name="comment-text-multiple-outline" size={22} color={tintColor} type='material-community'/>
+    //         )
+    //     }
+    // },
     Post: {
         screen: PostStack,
         navigationOptions: {
@@ -62,10 +62,10 @@ export const Tabs = createTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'Post',
+    initialRouteName: 'Discover',
     lazyLoad: true,
     animationEnabled: true,
-    swipeEnabled: true,
+    // swipeEnabled: true,
     tabBarOptions: {
         activeTintColor: '#f1c002',
         inactiveTintColor: 'gray',

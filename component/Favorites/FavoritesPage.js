@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {View, Text, Image, FlatList, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native';
-import {CheckBox, Button, Icon} from 'react-native-elements';
+import {CheckBox} from 'react-native-elements';
 import {createStackNavigator} from "react-navigation";
 import firebase from 'react-native-firebase';
 import _ from "lodash";
-import Swipeout from 'react-native-swipeout';
 
 export class FavoritesPage extends Component {
     constructor() {
@@ -33,20 +32,7 @@ export class FavoritesPage extends Component {
         const listItem = item.data();
         const categoryImage = this.findImage(listItem.selectedCategory);
 
-        const swipeoutBtns = [
-            {
-                backgroundColor: '#dbddde',
-                underlayColor: '#dbddde',
-                component: (<Button
-                    title=''
-                    buttonStyle={styles.swipeButton}
-                    textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)', marginLeft: -30}}
-                />)
-            }
-        ];
-
         return (
-            <Swipeout right={swipeoutBtns}>
                 <TouchableOpacity
                     style={{flex: 1, flexDirection: 'row', marginBottom: 5, backgroundColor: 'white'}}
                     onPress={() => {
@@ -96,7 +82,7 @@ export class FavoritesPage extends Component {
                             </View>
                         </View>
                     </View>
-                </TouchableOpacity></Swipeout>)
+                </TouchableOpacity>)
     };
 
     findImage = (category) => {
@@ -134,12 +120,18 @@ export class FavoritesPage extends Component {
     };
 
     handleRefresh = () => {
-        console.log('in refresh')
-        this.setState({
-            refreshing: true
-        }, () => {
-            this.fetchingCourse();
-        })
+        console.log('in refresh');
+        const user = firebase.auth().currentUser;
+        firebase.firestore().collection('users').doc(user.uid).get().then((user) => {
+            const userProfile = user.data();
+            this.setState({
+                favourList: userProfile.favourList,
+                refreshing: true
+            }, () => {
+                this.fetchingCourse();
+            });
+        });
+
     }
 
     fetchingCourse = () => {
@@ -153,6 +145,7 @@ export class FavoritesPage extends Component {
                     });
                 });
 
+                console.log(courses);
                 this.setState({
                     dataSource: courses,
                     isLoading: false,
