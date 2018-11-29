@@ -68,7 +68,7 @@ export class DetailPage extends Component {
         firebase.firestore().collection('users').doc(user.uid).get().then((user) => {
             const userProfile = user.data();
             this.setState({
-                favourList: userProfile.favourList
+                favourList: userProfile.favourList ? userProfile.favourList : []
             });
         });
         this.findUser(course.userId);
@@ -118,6 +118,7 @@ export class DetailPage extends Component {
             .catch(error => {
                 console.log(error);
                 this.setState({
+                    isLoading: false,
                     refreshing: false
                 })
             });
@@ -255,19 +256,19 @@ export class DetailPage extends Component {
                                 {category}
                             </Text>
                         </View>
-                        <View>
-                            <CheckBox title=''
-                                      checkedColor={'#e6b800'}
-                                      checked={this.state.isFavour}
-                                      containerStyle={{backgroundColor: 'white', borderWidth: 0}}
-                                      iconType='material-community'
-                                      size={25}
-                                      checkedIcon='heart'
-                                      uncheckedIcon='heart-outline'
-                                      onPress={this.handlePressFavour}
+                        {/*<View>*/}
+                        {/*<CheckBox title=''*/}
+                        {/*checkedColor={'#e6b800'}*/}
+                        {/*checked={this.state.isFavour}*/}
+                        {/*containerStyle={{backgroundColor: 'white', borderWidth: 0}}*/}
+                        {/*iconType='material-community'*/}
+                        {/*size={25}*/}
+                        {/*checkedIcon='heart'*/}
+                        {/*uncheckedIcon='heart-outline'*/}
+                        {/*onPress={this.handlePressFavour}*/}
 
-                            />
-                        </View>
+                        {/*/>*/}
+                        {/*</View>*/}
                     </View>
 
                     <View style={{width: '70%', marginLeft: 15,}}>
@@ -415,13 +416,31 @@ export class DetailPage extends Component {
                                     $ {this.state.price} / hour
                                 </Text>
                             </View>
-                            <View style={styles.addButton} style={{justifyContent: 'center', alignItems: 'center'}}>
-                                <Button
-                                    buttonStyle={styles.chatButton}
-                                    icon={{name: 'comment-text-multiple-outline', type: 'material-community', size: 22}}
-                                    textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}
-                                    title={'Chat'}
-                                />
+                            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                {/*<Button*/}
+                                {/*buttonStyle={styles.chatButton}*/}
+                                {/*icon={{name: 'heart', type: 'material-community', size: 22}}*/}
+                                {/*textStyle={{fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.9)'}}*/}
+                                {/*title={'Chat'}*/}
+                                {/*onPress={this.handlePressFavour}*/}
+                                {/*/>*/}
+                                <TouchableOpacity style={styles.chatButton} onPress={this.handlePressFavour}>
+                                    <CheckBox title='Favourite'
+                                              checkedColor={'white'}
+                                              uncheckedColor={'white'}
+                                              checked={this.state.isFavour}
+                                              containerStyle={{backgroundColor: 'transparent', borderWidth: 0, marginLeft: 25}}
+                                              textStyle={{color: 'white', fontSize: 17}}
+                                              iconType='material-community'
+                                              size={25}
+                                              checkedIcon='heart'
+                                              uncheckedIcon='heart-outline'
+                                              disabled={true}
+                                              wrapperStyle={{marginLeft: 25}}
+                                        // onPress={this.handlePressFavour}
+
+                                    />
+                                </TouchableOpacity>
                             </View>
                         </View>
 
@@ -493,7 +512,7 @@ const styles = StyleSheet.create({
     bottomBar: {
         shadowColor: 'grey',
         shadowOffset: {width: 0, height: -10},
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.2,
         backgroundColor: 'white',
         height: '100%',
         alignItems: 'center',
@@ -506,6 +525,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-end',
         width: 150,
+        height: 55
     }
 });
 

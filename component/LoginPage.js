@@ -78,6 +78,7 @@ export class LoginPage extends Component {
                         inputStyle={{marginTop: 5}}
                         onChangeText={password => this.setState({password})}
                         ref={(input) => this.passwordInput = input}
+                        onSubmitEditing={this.handleLogin}
                     />
                     <FormValidationMessage>{errorMessage}</FormValidationMessage>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>

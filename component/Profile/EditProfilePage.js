@@ -1,6 +1,16 @@
 import React, {Component} from 'react';
 import {Button, Avatar, List, ListItem, Icon, Tile} from 'react-native-elements';
-import {View, StyleSheet, ScrollView, Text, TouchableOpacity, AlertIOS, ImagePickerIOS, Image, ImageStore} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    AlertIOS,
+    ImagePickerIOS,
+    Image,
+    ImageStore
+} from 'react-native';
 import {createStackNavigator} from "react-navigation";
 import firebase from 'react-native-firebase';
 import ActionSheet from 'react-native-actionsheet';
@@ -77,8 +87,10 @@ export class EditProfilePage extends Component {
                 email: this.state.email
             }).then(() => {
                 if (this.state.imageUri) {
+                    console.log('in change avatar');
+                    console.log(this.state.imageUri);
                     const storage = firebase.storage().refFromURL('gs://tutu-project.appspot.com/avatar/' + user.uid);
-                    storage.putString(this.state.imageUri).then(() => {
+                    storage.putFile(this.state.imageUri).then(() => {
                         this.setState({
                             visible: !this.state.visible
                         });
@@ -145,12 +157,10 @@ export class EditProfilePage extends Component {
                     </TouchableOpacity>
                     <ActionSheet
                         ref={o => this.ActionSheet = o}
-                        options={['Take Photo', 'Choose from library', 'Cancel']}
+                        options={['Choose from library', 'Cancel']}
                         cancelButtonIndex={2}
                         onPress={(index) => {
-                            if (index == 0) {
-                                this.takePhoto();
-                            } else if (index == 1) {
+                            if (index === 0) {
                                 this.pickImage();
                             }
                         }}

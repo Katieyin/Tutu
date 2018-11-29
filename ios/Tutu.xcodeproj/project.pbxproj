@@ -1569,6 +1569,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = katie.yin.honor.project.Tutu;
 				PRODUCT_NAME = Tutu;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1593,6 +1594,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = katie.yin.honor.project.Tutu;
 				PRODUCT_NAME = Tutu;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
