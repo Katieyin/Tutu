@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "react": "16.4.1",
-    "react-native": "0.56.0",
+    "react-native": "0.70.2",
     "react-native-actionsheet": "^2.4.2",
     "react-native-elements": "^0.19.1",
     "react-native-firebase": "^4.3.8",
